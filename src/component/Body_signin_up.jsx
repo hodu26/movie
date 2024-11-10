@@ -23,7 +23,7 @@ function LoginRegister() {
               <i className="fas fa-lock"></i>
               <input type="password" placeholder="비밀번호" />
             </div>
-            <a href="#" className="forgot-password">비밀번호를 잊으셨나요?</a>
+            <button className="forgot-password">비밀번호를 잊으셨나요?</button>
             <button className="btn btn-login">로그인</button>
             <p className="toggle-text">
               계정이 없으신가요? <span className="toggle" onClick={toggleForm}>회원가입</span>
