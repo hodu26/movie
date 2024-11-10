@@ -27,13 +27,13 @@
     gap: 1.5rem; /* space-x-6 equivalent */
   }
   
-  .header .navigation a {
+  .header .navigation button {
     color: white;
     text-decoration: none;
     transition: color 0.3s;
   }
   
-  .header .navigation a:hover {
+  .header .navigation button:hover {
     color: #d1d5db; /* Hover: Gray-300 */
   }
   
