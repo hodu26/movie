@@ -35,9 +35,14 @@ const Home = () => {
 
     const scroll = (direction, elementId) => {
         const container = document.getElementById(elementId);
-        const scrollAmount = direction === 'left' ? -300 : 300;
+        const elementWidth = container.firstElementChild.offsetWidth;
+        const visibleCount = Math.floor(container.clientWidth / elementWidth);
+        const scrollAmount = direction === 'left' 
+          ? -elementWidth * (visibleCount - 1)
+          : elementWidth * (visibleCount - 1);
+      
         container.scrollBy({ left: scrollAmount, behavior: 'smooth' });
-    };
+      };      
 
     const MovieCategory = ({ title, movies, id }) => (
         <div className="movie-category">
