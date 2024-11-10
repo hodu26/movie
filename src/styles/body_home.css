@@ -117,10 +117,11 @@
   
   .movie-scroll-area {
     display: flex;
-    overflow-x: auto;
+    overflow: hidden;
     gap: 1rem;
     padding-bottom: 1rem;
     scroll-behavior: smooth;
+    scrollbar-width: 'none',
   }
   
   .movie-card {
