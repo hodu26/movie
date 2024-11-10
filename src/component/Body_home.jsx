@@ -48,12 +48,6 @@ const Home = () => {
         <div className="movie-category">
             <h2 className="category-title">{title}</h2>
             <div className="scroll-container group">
-                <button
-                    onClick={() => scroll('left', id)}
-                    className="scroll-button scroll-left"
-                >
-                    <ChevronLeft className="text-white" />
-                </button>
                 <div id={id} className="movie-scroll-area">
                     {movies.map((movie) => (
                         <div key={movie.id} className="movie-card">
@@ -70,6 +64,12 @@ const Home = () => {
                         </div>
                     ))}
                 </div>
+                <button
+                    onClick={() => scroll('left', id)}
+                    className="scroll-button scroll-left"
+                >
+                    <ChevronLeft className="text-white" />
+                </button>
                 <button
                     onClick={() => scroll('right', id)}
                     className="scroll-button scroll-right"
