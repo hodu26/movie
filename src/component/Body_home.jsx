@@ -33,11 +33,20 @@ const Home = () => {
         ],
     };
 
+    const scroll = (direction, elementId) => {
+        const container = document.getElementById(elementId);
+        const scrollAmount = direction === 'left' ? -300 : 300;
+        container.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+    };
+
     const MovieCategory = ({ title, movies, id }) => (
         <div className="movie-category">
             <h2 className="category-title">{title}</h2>
             <div className="scroll-container group">
-                <button className="scroll-button scroll-left">
+                <button
+                    onClick={() => scroll('left', id)}
+                    className="scroll-button scroll-left"
+                >
                     <ChevronLeft className="text-white" />
                 </button>
                 <div id={id} className="movie-scroll-area">
@@ -56,7 +65,10 @@ const Home = () => {
                         </div>
                     ))}
                 </div>
-                <button className="scroll-button scroll-right">
+                <button
+                    onClick={() => scroll('right', id)}
+                    className="scroll-button scroll-right"
+                >
                     <ChevronRight className="text-white" />
                 </button>
             </div>
@@ -65,7 +77,7 @@ const Home = () => {
 
     return (
         <div className="home-container">
- 
+
             <div className="hero-section">
                 <img
                     src={require('../assets/image/venom.jpg')}
