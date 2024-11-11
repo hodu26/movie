@@ -25,15 +25,13 @@
       var pathSegmentsToKeep = 0;
 
       var l = window.location;
-      var newUrl = l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') +
+      l.replace(
+        l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') +
         l.pathname.split('/').slice(0, 1 + pathSegmentsToKeep).join('/') + '/?/' +
-        l.pathname.slice(1).split('/').slice(pathSegmentsToKeep).join('/') +
+        l.pathname.slice(1).split('/').slice(pathSegmentsToKeep).join('/').replace(/&/g, '~and~') +
         (l.search ? '&' + l.search.slice(1).replace(/&/g, '~and~') : '') +
-        l.hash;
-
-      // ?가 중간에 들어가지 않도록 조정한 후, 페이지를 새 URL로 리디렉션
-      newUrl = newUrl.replace(/\/\?\/\?/g, '/?'); // 불필요한 ? 제거
-      l.replace(newUrl);
+        l.hash
+      );
 
     </script>
   </head>
