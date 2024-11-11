@@ -26,7 +26,7 @@ const Header = () => {
                     {/* Navigation */}
                     <nav className="navigation">
                         <button onClick={handleHome}>홈</button>
-                        <button>대시 콘텐츠</button>
+                        <button>대세 콘텐츠</button>
                         <button>찾아보기</button>
                         <button>내가 찜한 리스트</button>
                     </nav>
