@@ -40,8 +40,10 @@ jobs:
     if: github.ref == 'refs/heads/main'
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - name: Download artifact for deployment
+        uses: actions/download-pages-artifact@v3
+        with:
+          path: ./build
         
       - name: Deploy to GitHub Pages
         run: npm run deploy
