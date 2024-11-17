@@ -1,0 +1,69 @@
+.hero-section {
+    position: relative;
+    height: 70vh;
+    margin-bottom: 3rem;
+    border-radius: 1rem;
+    overflow: hidden;
+  }
+  
+  .hero-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  .hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to right, rgba(0, 0, 0, 0.8), transparent);
+    display: flex;
+    align-items: center;
+  }
+  
+  .hero-content {
+    max-width: 32rem;
+    margin-left: 3rem;
+  }
+  
+  .hero-title {
+    font-size: 3rem;
+    font-weight: bold;
+    color: white;
+    margin-bottom: 1rem;
+  }
+  
+  .hero-description {
+    color: #d1d5db; /* Tailwind text-gray-200 */
+    margin-bottom: 1.5rem;
+    font-size: 1.125rem;
+  }
+  
+  .hero-buttons {
+    display: flex;
+    gap: 1rem;
+  }
+  
+  .hero-button {
+    padding: 0.75rem 2rem;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    transition: background-color 0.3s;
+  }
+  
+  .play-button {
+    background-color: #e11d48; /* Tailwind red-600 */
+    color: white;
+  }
+  
+  .play-button:hover {
+    background-color: #b91c1c; /* Tailwind red-700 */
+  }
+  
+  .info-button {
+    background-color: #374151; /* Tailwind gray-800 */
+    color: white;
+  }
+  
+  .info-button:hover {
+    background-color: #4b5563; /* Tailwind gray-700 */
+  }

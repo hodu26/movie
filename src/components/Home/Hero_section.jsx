@@ -1,5 +1,5 @@
 import React from 'react';
-import 'styles/Home/body_home.css';
+import 'styles/Home/hero_section.css';
 
 const HeroSection = ({ image, title, description }) => {
     return (

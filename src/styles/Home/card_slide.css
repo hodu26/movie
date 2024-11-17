@@ -1,0 +1,87 @@
+.movie-category {
+    margin-bottom: 2rem;
+  }
+  
+  .category-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    color: white;
+  }
+  
+  .scroll-container {
+    position: relative;
+  }
+  
+  .scroll-button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 0.5rem;
+    border-radius: 50%;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  
+  .scroll-left {
+    left: 0;
+  }
+  
+  .scroll-right {
+    right: 0;
+  }
+  
+  .group:hover .scroll-button {
+    opacity: 1;
+  }
+  
+  .movie-scroll-area {
+    display: flex;
+    overflow: hidden;
+    gap: 1rem;
+    padding-bottom: 1rem;
+    scroll-behavior: smooth;
+    scrollbar-width: 'none',
+  }
+  
+  .movie-card {
+    flex: none;
+    width: 12rem;
+    transition: transform 0.3s;
+  }
+  
+  .movie-card:hover {
+    transform: scale(1.05);
+  }
+  
+  .card-image {
+    position: relative;
+    aspect-ratio: 2 / 3;
+    border-radius: 0.5rem;
+    overflow: hidden;
+  }
+  
+  .card-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 0.5rem;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+  }
+  
+  .movie-title {
+    color: white;
+    font-size: 0.875rem;
+    font-weight: 600;
+  }
+  
+  .rating {
+    display: flex;
+    align-items: center;
+    color: #facc15; /* Tailwind yellow-400 */
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+  }
+  
