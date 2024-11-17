@@ -2,11 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import HeroSection from 'components/Home/Hero_section'
 import MovieCategory from 'components/Home/Card_slide'
+import SignInUp from 'components/SignInUp/Body_signin_up';
 import 'styles/Home/body_home.css';
 
 const Home = () => {
     const navigate = useNavigate();
-    const [isLoading, setIsLoading] = useState(true); // 로딩 상태
+    const [isLogin, setIsLogin] = useState(false); // 로딩 상태
 
     // 로그인 확인
     useEffect(() => {
@@ -15,10 +16,10 @@ const Home = () => {
         if (!savedTMDbKey) {
             navigate('/signin');
         }
-        else setIsLoading(false);
+        else setIsLogin(true);
 
     }, [navigate]);
-    if (isLoading) return null;  // 로딩 중 아무것도 안보이게 함
+    if (!isLogin) return <SignInUp />
 
     const movies = {
         popular: [

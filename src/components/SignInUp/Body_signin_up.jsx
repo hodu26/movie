@@ -41,9 +41,9 @@ function LoginRegister() {
       localStorage.setItem('rememberMe', rememberMe);
       localStorage.setItem('TMDb-Key', password);
 
-      setRememberMe(false);
       setEmail('');
       setPassword('');
+      setRememberMe(false);
 
       navigate('/');
     } else {
@@ -79,6 +79,9 @@ function LoginRegister() {
     savedUsersData[email] = newUserData;
     localStorage.setItem('users', JSON.stringify(savedUsers));
     localStorage.setItem('users_data', JSON.stringify(savedUsersData));
+    
+    localStorage.setItem('email', '');
+    localStorage.setItem('rememberMe', false);
 
     setEmail('');
     setPassword('');
@@ -87,10 +90,15 @@ function LoginRegister() {
   };
 
   const toggleForm = () => {
-    setEmail('');
+    const savedEmail = localStorage.getItem('email');
+    const savedRememberMe = localStorage.getItem('rememberMe') === "true";
+
+    if (isLogin) setEmail('');
+    else setEmail(savedEmail);
+
     setPassword('');
     setConfirmPassword('');
-    setRememberMe(false);
+    setRememberMe(savedRememberMe);
     setIsLogin(!isLogin);
   };
 
