@@ -26,12 +26,6 @@ const Header = () => {
                         <img src={process.env.PUBLIC_URL + '/logo.png'}/>
                     </div>
 
-                    {/* <div className="logo" onClick={handleHome}>
-                        <svg viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M3 3h18v18H3V3zm16 16V5H5v14h14z" />
-                        </svg>
-                    </div> */}
-
                     {/* 내비게이션 (데스크톱용) */}
                     <nav className="navigation hidden md:flex">
                         <button onClick={handleHome}>홈</button>
