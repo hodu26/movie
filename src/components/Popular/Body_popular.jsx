@@ -45,6 +45,8 @@ const Popular = () => {
     };
   }, [navigate])
   if (!isLogin) return <SignInUp />
+
+
   
   // 영화 데이터
   const movies = Array.from({ length: 30 }, (_, i) => ({
@@ -73,6 +75,7 @@ const Popular = () => {
           <button 
             className="button button-grid"
             aria-label="Grid view"
+            onClick={() => setIsGrid(true)}
           >
             <svg 
               className="icon"
@@ -92,6 +95,7 @@ const Popular = () => {
           <button 
             className="button button-list"
             aria-label="List"
+            onClick={() => setIsGrid(false)}
           >
             <svg 
               className="icon"
