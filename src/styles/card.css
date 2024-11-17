@@ -1,7 +1,8 @@
 .movie-card {
     flex: none;
-    width: 12rem;
+    width: 8rem;
     transition: transform 0.3s;
+    cursor: pointer;
 }
 
 .movie-card:hover {
@@ -49,6 +50,7 @@
     color: white;
     font-size: 0.875rem;
     margin-top: 0.25rem;
+    cursor: pointer;
 }
 
 .thumbs-icon {
@@ -56,4 +58,11 @@
     color: #facc15; /* Tailwind yellow-400 */
     width: 1rem;
     height: 1rem;
+}
+
+/* 반응형 */
+@media (min-width: 768px) {
+    .movie-card {
+        width: 12rem;
+    }
 }

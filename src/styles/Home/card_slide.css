@@ -1,47 +1,53 @@
 .movie-category {
-    margin-bottom: 2rem;
-  }
-  
-  .category-title {
-    font-size: 1.5rem;
-    font-weight: bold;
-    margin-bottom: 1rem;
-    color: white;
-  }
-  
-  .scroll-container {
-    position: relative;
-  }
-  
-  .scroll-button {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    background-color: rgba(0, 0, 0, 0.5);
-    padding: 0.5rem;
-    border-radius: 50%;
-    opacity: 0;
-    transition: opacity 0.3s;
-  }
-  
-  .scroll-left {
-    left: 0;
-  }
-  
-  .scroll-right {
-    right: 0;
-  }
-  
-  .group:hover .scroll-button {
-    opacity: 1;
-  }
-  
-  .movie-scroll-area {
-    display: flex;
-    overflow: hidden;
-    gap: 1rem;
-    padding-bottom: 1rem;
-    scroll-behavior: smooth;
-    scrollbar-width: 'none',
-  }
-  
+  margin-bottom: 2rem;
+}
+
+.category-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  color: white;
+}
+
+.scroll-container {
+  position: relative;
+}
+
+.scroll-button {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 0.5rem;
+  border-radius: 50%;
+  opacity: 0;
+  transition: opacity 0.3s;
+  cursor: pointer;
+  z-index: 10;
+  touch-action: manipulation; /* 모바일 터치 동작 보장 */
+}
+
+.scroll-left {
+  left: 0;
+}
+
+.scroll-right {
+  right: 0;
+}
+
+.group:hover .scroll-button {
+  opacity: 1;
+}
+
+.movie-scroll-area {
+  display: flex;
+  overflow: hidden;
+  gap: 1rem;
+  padding-bottom: 1rem;
+  scroll-behavior: smooth;
+  scrollbar-width: none; /* Firefox */
+}
+
+.movie-scroll-area::-webkit-scrollbar {
+  display: none; /* Chrome, Safari */
+}
