@@ -10,7 +10,7 @@
 
 .signin-container {
   min-height: 100vh;
-  background-color: #1f2937;
+  background: linear-gradient(to bottom, #181818, #1A1A1A, #2B2B2B);
   padding: 2rem;
 }
 
@@ -96,6 +96,65 @@ body {
   border-radius: 5px;
   background: rgba(255, 255, 255, 0.1);
   color: #fff;
+}
+
+.checkbox-group {
+  font-size: 10px;
+  font-weight: 600;
+  color: #b6adad;
+  margin-top: -15px;
+  margin-bottom: 15px;
+  margin-left: -140px;
+  display: flex;
+}
+
+/* 기본 input[type="checkbox"] 숨기기 */
+.checkbox-group input[type="checkbox"] {
+  display: none;
+}
+
+/* 커스텀 체크박스 스타일링 */
+.checkbox-group .checkmark {
+  position: relative;
+  display: flex;
+  float: left;
+  width: 12px;
+  height: 12px;
+  margin-right: 4px;
+  border-radius: 50%; /* 원형으로 만들기 */
+  background-color: #b6adad;
+  border: 0.5px solid #7a4caf;
+  transition: all 0.3s ease;
+}
+
+/* 체크 상태일 때 */
+.checkbox-group input[type="checkbox"]:checked + .checkmark {
+  background-color: #7a4caf;
+  border-color: #7a4caf;
+}
+
+/* 체크 상태일 때 내부 체크모양 */
+.checkbox-group input[type="checkbox"]:checked + .checkmark::after {
+  content: "";
+  position: absolute;
+  left: 2.5px;
+  top: 0px;
+  width: 5px;
+  height: 9px;
+  border: solid white;
+  border-width: 0 2.5px 2.5px 0;
+  transform: rotate(45deg)
+}
+
+/* 체크박스를 클릭했을 때 애니메이션 효과 */
+.checkbox-group:hover .checkmark {
+  border-color: #7a4caf;
+  background-color: #f1f1f1;
+}
+
+.checkbox-group input[type="checkbox"]:focus + .checkmark {
+  outline: none;
+  box-shadow: 0 0 3px #7a4caf;
 }
 
 .forgot-password {

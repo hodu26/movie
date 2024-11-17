@@ -9,6 +9,23 @@ const Header = () => {
 
     const handleHome = () => navigate('/');
 
+    const handleProfile = () => { // 로그아웃
+        const savedTMDbKey = localStorage.getItem('TMDb-Key');
+
+        if (savedTMDbKey){
+            const savedRememberMe = localStorage.getItem('rememberMe') === 'true';
+
+            if (!savedRememberMe){
+                localStorage.removeItem('email');
+            }
+            
+            localStorage.removeItem('TMDb-Key');
+            alert('로그아웃 되었습니다.');
+        }
+        
+        navigate('/signin');
+    }
+
     const toggleSidebar = () => setSidebarOpen(!isSidebarOpen);
 
     return (
@@ -36,7 +53,7 @@ const Header = () => {
 
                     {/* 유저 프로필 */}
                     <div className="user-profile">
-                        <button>
+                        <button onClick={handleProfile}>
                             <User className="w-6 h-6 text-white" />
                         </button>
                     </div>
