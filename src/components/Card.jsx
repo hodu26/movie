@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Star, ThumbsUp } from 'lucide-react';
 import 'styles/card.css';
 
-const MovieCard = ({ movie }) => {
+const MovieCard = ({ movie, aspectRatio }) => {
     const [isFavorite, setIsFavorite] = useState(false);
 
     const toggleFavorite = () => {
@@ -11,7 +11,7 @@ const MovieCard = ({ movie }) => {
 
     return (
         <div className="movie-card">
-            <div className="card-image">
+            <div className="card-image" style={{aspectRatio: aspectRatio}}>
                 <div className="favorite-icon" onClick={toggleFavorite}>
                     <Star
                         fill={isFavorite ? '#facc15' : 'none'}

@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import MovieCard from 'components/Card';
+import MovieGrid from 'components/Popular/Grid_section';
 import SignInUp from 'components/SignInUp/Body_signin_up';
 import 'styles/Popular/body_popular.css';
 
-const MovieGrid = () => {
+const Popular = () => {
   const navigate = useNavigate();
   const [isLogin, setIsLogin] = useState(false); // 로딩 상태
   const [isGrid, setIsGrid] = useState(true); // Grid <-> List
@@ -110,6 +110,9 @@ const MovieGrid = () => {
         </div>
       </div>
 
+      {/* 영화 그리드 */}
+      <MovieGrid movies={currentMovies} />
+
       {/* 페이지네이션 */}
       <div className="pagination">
         <button
@@ -130,4 +133,4 @@ const MovieGrid = () => {
   );
 };
 
-export default MovieGrid;
+export default Popular;
