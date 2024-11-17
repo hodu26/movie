@@ -1,0 +1,17 @@
+.movie-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(8rem, 1fr));
+    gap: 2rem;
+    /* 카드 사이 간격 */
+    justify-items: center;
+    justify-content: center;
+    max-width: 100%;
+    margin: 0 auto;
+}
+
+/* 반응형 */
+@media (min-width: 768px) {
+    .movie-grid {
+        grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr))
+    }
+}

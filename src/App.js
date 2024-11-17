@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from 'pages/Home';
 import SignInUp from 'pages/SignInUp';
+import Popular from 'pages/Popular';
 import NotFound from 'pages/404NotFound';
 
 function App() {
@@ -10,6 +11,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/signin" element={<SignInUp />} />
+        <Route path="/popular" element={<Popular />} />
 
         {/* 404 페이지 */}
         <Route path="*" element={<NotFound />} />
