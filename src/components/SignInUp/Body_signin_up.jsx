@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import '../styles/body_signin_up.css';
+import 'styles/SignInUp/body_signin_up.css';
 
 function LoginRegister() {
   const [isLogin, setIsLogin] = useState(true);
