@@ -23,7 +23,7 @@ const Header = () => {
                     
                     {/* 로고 */}
                     <div className="logo" onClick={handleHome}>
-                        <img src={process.env.PUBLIC_URL + '/logo.png'}/>
+                        <img src={process.env.PUBLIC_URL + '/logo.png'} alt="Movie Action logo" />
                     </div>
 
                     {/* 내비게이션 (데스크톱용) */}

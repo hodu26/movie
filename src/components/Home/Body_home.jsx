@@ -41,7 +41,7 @@ const Home = () => {
     return (
         <div className="home-container">
             <HeroSection
-                image={require('../../assets/image/venom.jpg')}
+                image={require('assets/image/venom.jpg')}
                 title="베놈: 라스트 댄스"
                 description="환상의 케미스트리의 액션 블록과 그의 심비오트 베놈은 그들을 노리는 정체불명 존재의 추격을 피해 최어드워을 다니게 된다..."
             />
