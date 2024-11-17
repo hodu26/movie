@@ -1,6 +1,6 @@
 import React from 'react';
 import Header from 'components/Header';
-import Body from 'components/404NotFound/Body_404notfound';
+import Body from 'components/SignInUp/Body_signin_up';
 
 const Home = () => {
   return (
