@@ -1,9 +1,25 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import HeroSection from 'components/Home/Hero_section'
 import MovieCategory from 'components/Home/Card_slide'
 import 'styles/Home/body_home.css';
 
 const Home = () => {
+    const navigate = useNavigate();
+    const [isLoading, setIsLoading] = useState(true); // 로딩 상태
+
+    // 로그인 확인
+    useEffect(() => {
+        const savedTMDbKey = localStorage.getItem('TMDb-Key');
+
+        if (!savedTMDbKey) {
+            navigate('/signin');
+        }
+        else setIsLoading(false);
+
+    }, [navigate]);
+    if (isLoading) return null;  // 로딩 중 아무것도 안보이게 함
+
     const movies = {
         popular: [
             { id: 1, title: 'Venom', image: require('assets/image/venom.jpg'), rating: 4.5 },
