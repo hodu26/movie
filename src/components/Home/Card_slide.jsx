@@ -1,5 +1,6 @@
 import React from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import MovieCard from 'components/Card';
 import 'styles/Home/card_slide.css';
 
 const MovieCategory = ({ title, movies, id }) => {
@@ -7,7 +8,7 @@ const MovieCategory = ({ title, movies, id }) => {
         const container = document.getElementById(elementId);
         const elementWidth = container.firstElementChild.offsetWidth;
         const visibleCount = Math.floor(container.clientWidth / elementWidth);
-        const scrollAmount = direction === 'left' 
+        const scrollAmount = direction === 'left'
             ? -elementWidth * (visibleCount - 1)
             : elementWidth * (visibleCount - 1);
 
@@ -20,18 +21,7 @@ const MovieCategory = ({ title, movies, id }) => {
             <div className="scroll-container group">
                 <div id={id} className="movie-scroll-area">
                     {movies.map((movie) => (
-                        <div key={movie.id} className="movie-card">
-                            <div className="card-image">
-                                <img src={movie.image} alt={movie.title} />
-                                <div className="card-overlay">
-                                    <p className="movie-title">{movie.title}</p>
-                                    <div className="rating">
-                                        <span>★</span>
-                                        <span>{movie.rating}</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <MovieCard key={movie.id} movie={movie} />
                     ))}
                 </div>
                 <button
