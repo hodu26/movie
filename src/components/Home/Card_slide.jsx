@@ -1,6 +1,6 @@
 import React from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import 'styles/Home/body_home.css';
+import 'styles/Home/card_slide.css';
 
 const MovieCategory = ({ title, movies, id }) => {
     const scroll = (direction, elementId) => {
