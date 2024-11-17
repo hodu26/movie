@@ -1,8 +1,8 @@
 import React from 'react';
-import Header from '../component/Header';
-import Body from '../component/Body_signin_up';
+import Header from 'components/Header';
+import Body from 'components/404NotFound/Body_404notfound';
 
-const Home = () => {
+const NotFound = () => {
   return (
     <div className="w-full h-screen mx-auto bg-[#fff]">
       <Header />
@@ -13,4 +13,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default NotFound;

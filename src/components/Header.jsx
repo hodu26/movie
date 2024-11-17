@@ -1,7 +1,7 @@
 import React from 'react';
 import { User } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import '../styles/header.css';
+import 'styles/header.css';
 
 const Header = () => {
     const navigate = useNavigate();
