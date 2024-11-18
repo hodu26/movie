@@ -17,7 +17,7 @@ const Popular = () => {
     const savedTMDbKey = localStorage.getItem('TMDb-Key');
 
     if (!savedTMDbKey) {
-        navigate('/signin');
+      navigate('/signin');
     }
     else setIsLogin(true);
 
@@ -26,10 +26,10 @@ const Popular = () => {
     // 한페이지 영화 개수 계산
     const updateMoviesPerPage = () => {
       const windowWidth = window.innerWidth;
-      
+
       if (windowWidth < 768) { // 모바일 (최대 4줄)
         setMoviesPerPage(Math.floor((windowWidth - 6 * 16) / (9.34 * 16)) * 4);
-      } 
+      }
       else { // 윈도우 (최대 3줄)
         setMoviesPerPage(Math.floor((windowWidth - 14 * 16) / (13.34 * 16)) * 3);
       }
@@ -47,7 +47,7 @@ const Popular = () => {
   if (!isLogin) return <SignInUp />
 
 
-  
+
   // 영화 데이터
   const movies = Array.from({ length: 30 }, (_, i) => ({
     id: i + 1,
@@ -70,43 +70,44 @@ const Popular = () => {
 
   return (
     <div className="popular-container">
+      {/* 영화 그리드 <-> 리스트 버튼 */}
       <div className="w-full p-4">
         <div className="grid-list">
-          <button 
+          <button
             className="button button-grid"
             aria-label="Grid view"
             onClick={() => setIsGrid(true)}
           >
-            <svg 
+            <svg
               className="icon"
-              fill="none" 
-              stroke="currentColor" 
+              fill="none"
+              stroke="currentColor"
               viewBox="0 0 24 24"
             >
-              <path 
-                strokeLinecap="round" 
-                strokeLinejoin="round" 
-                strokeWidth={2} 
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
                 d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"
               />
             </svg>
           </button>
-          
-          <button 
+
+          <button
             className="button button-list"
             aria-label="List"
             onClick={() => setIsGrid(false)}
           >
-            <svg 
+            <svg
               className="icon"
-              fill="none" 
-              stroke="currentColor" 
+              fill="none"
+              stroke="currentColor"
               viewBox="0 0 24 24"
             >
-              <path 
-                strokeLinecap="round" 
-                strokeLinejoin="round" 
-                strokeWidth={2} 
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
                 d="M4 6h16M4 12h16M4 18h16"
               />
             </svg>
@@ -114,8 +115,14 @@ const Popular = () => {
         </div>
       </div>
 
-      {/* 영화 그리드 */}
-      <MovieGrid movies={currentMovies} />
+      {/* 영화 그리드 <-> 리스트 섹션 */}
+      <div className='grid-list-container'>
+        {isGrid ? (
+          <MovieGrid movies={currentMovies} />
+        ) : (
+          <MovieGrid movies={currentMovies} />
+        )}
+      </div>
 
       {/* 페이지네이션 */}
       <div className="pagination">
