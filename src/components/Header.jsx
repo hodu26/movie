@@ -8,6 +8,9 @@ const Header = () => {
     const navigate = useNavigate();
 
     const handleHome = () => navigate('/');
+    const handlePopular = () => navigate('/popular');
+    const handleSearch = () => navigate('/search');
+    const handleWishlist = () => navigate('/wishlist');
 
     const handleProfile = () => { // 로그아웃
         const savedTMDbKey = localStorage.getItem('TMDb-Key');
@@ -46,9 +49,9 @@ const Header = () => {
                     {/* 내비게이션 (데스크톱용) */}
                     <nav className="navigation hidden md:flex">
                         <button onClick={handleHome}>홈</button>
-                        <button>대세 콘텐츠</button>
-                        <button>찾아보기</button>
-                        <button>내가 찜한 리스트</button>
+                        <button onClick={handlePopular}>대세 콘텐츠</button>
+                        <button onClick={handleSearch}>찾아보기</button>
+                        <button onClick={handleWishlist}>내가 찜한 리스트</button>
                     </nav>
 
                     {/* 유저 프로필 */}
@@ -72,9 +75,9 @@ const Header = () => {
                 
                 <div className="sidebar-content">
                     <button onClick={() => { handleHome(); toggleSidebar(); }}>홈</button>
-                    <button>대세 콘텐츠</button>
-                    <button>찾아보기</button>
-                    <button>내가 찜한 리스트</button>
+                    <button onClick={() => { handlePopular(); toggleSidebar(); }}>대세 콘텐츠</button>
+                    <button onClick={() => { handleSearch(); toggleSidebar(); }}>찾아보기</button>
+                    <button onClick={() => { handleWishlist(); toggleSidebar(); }}>내가 찜한 리스트</button>
                 </div>
             </div>
 
