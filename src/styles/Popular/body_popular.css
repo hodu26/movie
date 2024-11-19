@@ -51,7 +51,6 @@
 
 /* Grid/List 영역 */
 .grid-list-container {
-  max-height: 90vh;
   flex: 1;
 }
 
@@ -62,7 +61,7 @@
   align-items: center;
   margin-top: 2rem;
   gap: 1rem;
-  position: sticky;
+  position: relative;
   bottom: 20px;
 }
 

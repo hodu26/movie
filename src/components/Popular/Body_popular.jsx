@@ -122,23 +122,23 @@ const Popular = () => {
         ) : (
           <MovieGrid movies={currentMovies} />
         )}
-      </div>
 
-      {/* 페이지네이션 */}
-      <div className="pagination">
-        <button
-          onClick={handlePrevPage}
-          disabled={currentPage === 1}
-        >
-          <ChevronLeft className="w-6 h-6" />
-        </button>
-        <span>{`${currentPage} / ${totalPages}`}</span>
-        <button
-          onClick={handleNextPage}
-          disabled={currentPage === totalPages}
-        >
-          <ChevronRight className="w-6 h-6" />
-        </button>
+        {/* 페이지네이션 */}
+        <div className="pagination">
+          <button
+            onClick={handlePrevPage}
+            disabled={currentPage === 1}
+          >
+            <ChevronLeft className="w-6 h-6" />
+          </button>
+          <span>{`${currentPage} / ${totalPages}`}</span>
+          <button
+            onClick={handleNextPage}
+            disabled={currentPage === totalPages}
+          >
+            <ChevronRight className="w-6 h-6" />
+          </button>
+        </div>
       </div>
     </div>
   );
