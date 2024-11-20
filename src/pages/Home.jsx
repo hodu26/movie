@@ -7,14 +7,14 @@ const Body = React.lazy(() => import('components/Home/Body_home'));
 
 const Home = () => {
   return (
-    <div className="w-full h-screen mx-auto bg-[#fff]">
+    <div className="w-full h-screen flex flex-col mx-auto bg-[#fff]">
       <Header />
 
-      <div className="mt-[4rem]">
-      {/* 로딩 화면 */}
-      <Suspense
+      <div className="flex-grow mt-[4rem]">
+        {/* 로딩 화면 */}
+        <Suspense
           fallback={
-            <div className="w-full h-screen flex justify-center items-center bg-gray-900">
+            <div className="flex-grow h-[100%] justify-center items-center bg-[#181818]">
               <LoadingSpinner />
             </div>
           }
