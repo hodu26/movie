@@ -8,7 +8,7 @@ import 'styles/Popular/body_popular.css';
 const Popular = () => {
   const navigate = useNavigate();
   const [isLogin, setIsLogin] = useState(false); // 로딩 상태
-  const [isTable, setIsTable] = useState(false); // Table view <-> Grid view
+  const [isTable, setIsTable] = useState(true); // Table view <-> Grid view
 
   useEffect(() => {
     // 로그인 확인
@@ -41,7 +41,7 @@ const Popular = () => {
       <div className="w-full p-4">
         <div className="view-toggle">
           <button
-            className="button button-grid"
+            className={`button ${isTable ? 'button-unselected' : 'button-selected'}`}
             aria-label="Grid view"
             onClick={() => setIsTable(false)}
           >
@@ -61,7 +61,7 @@ const Popular = () => {
           </button>
 
           <button
-            className="button button-table"
+            className={`button ${isTable ? 'button-selected' : 'button-unselected'}`}
             aria-label="Table view"
             onClick={() => setIsTable(true)}
           >
