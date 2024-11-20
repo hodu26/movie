@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef, useCallback } from 'react';
+import { ChevronUp } from 'lucide-react';
 import MovieCard from 'components/Card';
 import LoadingSpinner from 'components/Loading';
 import 'styles/Popular/grid_view.css';
@@ -8,6 +9,7 @@ const GridView = ({ movies }) => {
   const [isReady, setIsReady] = useState(false); // 계산 완료 플래그
   const [visibleMovies, setVisibleMovies] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [showScrollToTop, setShowScrollToTop] = useState(false);
   const observer = useRef(null);
 
   // 한페이지 영화 개수 계산
@@ -53,6 +55,24 @@ const GridView = ({ movies }) => {
       window.removeEventListener('resize', handleResize);
     };
   }, [moviesPerPage]);
+
+  // 스크롤 이벤트 감지
+  useEffect(() => {
+    const handleScroll = () => {
+      // 스크롤 위치가 300px 이상 내려가면 "맨 위로" 버튼 표시
+      setShowScrollToTop(window.scrollY > 300);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
+  // "맨 위로" 버튼 클릭 핸들러
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   // 스크롤이 하단에 가까워지면 더 많은 영화를 불러오는 함수
   // useCallback을 사용하여 loadMoreMovies를 메모이제이션
@@ -112,6 +132,16 @@ const GridView = ({ movies }) => {
 
       {/* 로딩 트리거를 위한 숨겨진 div */}
       <div id="load-more-trigger" style={{ height: '1px' }} />
+
+      {/* "맨 위로" 버튼 */}
+      {showScrollToTop && (
+        <button
+          className="scroll-to-top"
+          onClick={scrollToTop}
+        >
+          <ChevronUp />
+        </button>
+      )}
     </div>
   );
 };
