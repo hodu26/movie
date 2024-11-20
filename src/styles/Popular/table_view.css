@@ -1,0 +1,236 @@
+.movie-table-view-container {
+    min-height: 100%;
+    color: #ffffff;
+    margin: 0rem -2rem 0rem -2rem;
+    justify-content: center;
+}
+
+.movie-table-wrapper {
+    width: 100%;
+    margin: 0 auto;
+    align-items: stretch; /* 자식 요소가 부모 너비에 맞게 확장되도록 설정 */
+}
+
+/* 테이블 */
+.table-wrapper {
+    overflow-x: auto;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table-header-row {
+    border-bottom: 1px solid #4a5568;
+}
+
+.table-header {
+    padding: 0.25rem;
+    text-align: left;
+    font-size: 0.6rem;
+    font-weight: 500;
+    color: #a0aec0;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.table-header:hover {
+    background-color: #2d3748;
+}
+
+.table-header .icon {
+    width: 0.5rem;
+    height: 0.5rem;
+    opacity: 0.2;
+}
+
+.table-header .icon.active {
+    opacity: 1;
+}
+
+.table-body-row {
+    transition: background-color 0.2s ease;
+}
+
+.table-body-row:hover {
+    background-color: #2d3748;
+}
+
+.table-data {
+    padding: 0.75rem;
+    font-size: 0.5rem;
+    justify-content: center;
+    align-items: center;
+}
+
+/* 포스터 및 제목 */
+.movie-poster {
+    position: relative;
+    display: inline-block;
+    align-items: center;
+    width: 2rem;
+    aspect-ratio: 2 / 3;
+}
+
+.movie-poster .adult-icon {
+    position: absolute; /* 부모(.movie-poster)를 기준으로 */
+    color: rgba(255, 0, 0, 0.7);
+    top: -0.2rem;
+    left: -0.2rem;
+    width: 0.6rem;
+    height: 0.6rem;
+    z-index: 10;
+}
+
+.movie-poster img {
+    object-fit: cover;
+    border-radius: 0.375rem;
+    margin-right: 0.75rem;
+}
+
+.table-movie-title {
+    justify-items: center;
+    display: flex;
+    flex-direction: column;
+}
+
+.table-movie-title .title {
+    font-weight: 700;
+    display: flex;
+}
+
+.table-movie-title .description {
+    display: flex;
+    font-size: 0rem;
+    font-weight: 500;
+    max-height: 1rem;
+    overflow: hidden;
+}
+
+/* 평점 및 버튼 */
+.vote-wrapper {
+    display: flex;
+    align-items: center;
+}
+
+.vote-wrapper .thumbs-icon {
+    margin-right: 0.25rem;
+    color: #facc15;
+    width: 0.5rem;
+    height: 0.5rem;
+}
+
+.favorite-button {
+    padding: 0.25rem;
+    transition: background-color 0.2s ease;
+    border-radius: 9999px;
+}
+
+.favorite-button:hover {
+    background-color: #2d3748;
+}
+
+.favorite-button .star-icon {
+    color: #facc15;
+    width: 0.5rem;
+    height: 0.5rem;
+}
+
+/* 페이지네이션 버튼 */
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 2rem;
+    gap: 1rem;
+    position: fixed;
+    bottom: 1.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.pagination button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem;
+    border: none;
+    background-color: transparent;
+    color: #ffffff;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.pagination button:hover {
+    background-color: #444444;
+    border-radius: 50%;
+}
+
+.pagination button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* 페이지 번호 텍스트 */
+.pagination span {
+    color: #ffffff;
+    font-size: 1rem;
+}
+
+/* 반응형 */
+@media (min-width: 768px) {
+    .movie-table-view-container {
+        margin: 0rem;
+    }
+
+    .table-header {
+        padding: 0.75rem;
+        font-size: 0.875rem;
+        font-weight: 500;
+    }
+
+    .table-header .icon {
+        width: 1rem;
+        height: 1rem;
+    }
+
+    .table-data {
+        padding: 0.75rem;
+        font-size: 0.875rem;
+    }
+
+    .table-movie-title .description {
+        font-size: 0.7rem;
+        font-weight: 500;
+        max-height: 2rem;
+    }
+
+    .movie-poster {
+        width: 4rem;
+    }
+
+    .movie-poster .adult-icon {
+        top: -0.5rem;
+        left: -0.5rem;
+        width: 1.2rem;
+        height: 1.2rem;
+      }
+
+    .vote-wrapper .thumbs-icon {
+        margin-right: 0.5rem;
+        width: 1rem;
+        height: 1rem;
+    }
+
+    .favorite-button {
+        padding: 0.25rem;
+        transition: background-color 0.2s ease;
+        border-radius: 9999px;
+    }
+
+    .favorite-button .star-icon {
+        width: 1rem;
+        height: 1rem;
+    }
+}

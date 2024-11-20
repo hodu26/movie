@@ -52,6 +52,6 @@
 /* 반응형 */
 @media (min-width: 768px) {
     .movie-grid {
-      grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr))
+        grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr))
     }
-  }
+}
