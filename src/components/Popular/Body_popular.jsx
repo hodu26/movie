@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import MovieTable from 'components/Popular/Table_view';
+import MovieGrid from 'components/Popular/Grid_view';
 import SignInUp from 'components/SignInUp/Body_signin_up';
 import 'styles/Popular/body_popular.css';
 
 const Popular = () => {
   const navigate = useNavigate();
   const [isLogin, setIsLogin] = useState(false); // 로딩 상태
-  const [isTable, setIsTable] = useState(true); // Table view <-> Scroll view
+  const [isTable, setIsTable] = useState(false); // grid view <-> Grid view
 
   useEffect(() => {
     // 로그인 확인
@@ -31,13 +31,13 @@ const Popular = () => {
 
   return (
     <div className="popular-container">
-      {/* 영화 Table <-> Ccroll 버튼 */}
+      {/* 영화 Grid <-> Table 버튼 */}
       <div className="w-full p-4">
         <div className="view-toggle">
           <button
-            className="button button-table"
-            aria-label="Table view"
-            onClick={() => setIsTable(true)}
+            className="button button-grid"
+            aria-label="Grid view"
+            onClick={() => setIsTable(false)}
           >
             <svg
               className="icon"
@@ -55,9 +55,9 @@ const Popular = () => {
           </button>
 
           <button
-            className="button button-scroll"
-            aria-label="Scroll"
-            onClick={() => setIsTable(false)}
+            className="button button-table"
+            aria-label="Table view"
+            onClick={() => setIsTable(true)}
           >
             <svg
               className="icon"
@@ -76,12 +76,12 @@ const Popular = () => {
         </div>
       </div>
 
-      {/* 영화 Table <-> Scroll 섹션 */}
+      {/* 영화 Grid <-> Table 섹션 */}
       <div className='view-container'>
         {isTable ? (
-          <MovieTable movies={movies} />
+          <MovieGrid movies={movies} />
         ) : (
-          <MovieTable movies={movies} />
+          <MovieGrid movies={movies} />
         )}
       </div>
     </div>
