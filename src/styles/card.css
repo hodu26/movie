@@ -25,6 +25,16 @@
     background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
 }
 
+.card-adult-icon {
+    position: absolute; /* 부모(.movie-poster)를 기준으로 */
+    color: rgba(255, 0, 0, 0.7);
+    top: 0.5rem;
+    left: 0.5rem;
+    width: 1.2rem;
+    height: 1.2rem;
+    z-index: 10;
+}
+
 .favorite-icon {
     position: absolute;
     top: 0.5rem;
