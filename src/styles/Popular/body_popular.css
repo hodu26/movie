@@ -6,7 +6,7 @@
   overflow: hidden;
 }
 
-/* Table/Scroll 전환 버튼 */
+/* Grid/Table 전환 버튼 */
 .view-toggle {
   display: flex;
   justify-content: center;
@@ -25,20 +25,20 @@
 }
 
 /* Grid 버튼 */
-.view-toggle .button-table {
+.view-toggle .button-grid {
   background-color: #3b82f6;
 }
 
-.view-toggle .button-table:hover {
+.view-toggle .button-grid:hover {
   background-color: #2563eb;
 }
 
 /* List 버튼 */
-.view-toggle .button-scroll {
+.view-toggle .button-table {
   background-color: #4b5563;
 }
 
-.view-toggle .button-scroll:hover {
+.view-toggle .button-table:hover {
   background-color: #374151;
 }
 
@@ -49,7 +49,7 @@
   color: white;
 }
 
-/* Table/Scroll 영역 */
+/* Grid/Table 영역 */
 .view-container {
   flex: 1;
 }

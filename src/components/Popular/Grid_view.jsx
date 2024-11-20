@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import MovieCard from 'components/Card';
-import 'styles/Popular/table_view.css';
+import 'styles/Popular/grid_view.css';
 
-const TableView = ({ movies }) => {
+const GridView = ({ movies }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [moviesPerPage, setMoviesPerPage] = useState(24);
 
@@ -82,4 +82,4 @@ const TableView = ({ movies }) => {
   );
 };
 
-export default TableView;
+export default GridView;
