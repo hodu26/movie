@@ -7,8 +7,15 @@ import 'styles/Popular/body_popular.css';
 
 const Popular = () => {
   const navigate = useNavigate();
-  const [isLogin, setIsLogin] = useState(false); // 로딩 상태
-  const [isTable, setIsTable] = useState(false); // Table view <-> Grid view
+  const [isLogin, setIsLogin] = useState(false); // 로그인 상태
+  const [isTable, setIsTable] = useState(null); // Table view <-> Grid view
+
+  // isTable 값이 변경될 때 로컬 스토리지에 저장
+  useEffect(() => {
+    if (isTable !== null) {
+      localStorage.setItem('isTable', JSON.stringify(isTable));
+    }
+  }, [isTable]);
 
   useEffect(() => {
     // 로그인 확인
@@ -19,6 +26,16 @@ const Popular = () => {
     }
     else setIsLogin(true);
 
+    // 로컬 스토리지에서 isTable 값을 가져와 초기화
+    const savedView = localStorage.getItem('isTable');
+
+    if (savedView !== null) {
+      setIsTable(JSON.parse(savedView));
+    } 
+    else {
+      setIsTable(false);
+    }
+    
   }, [navigate])
   if (!isLogin) return <SignInUp />
 
@@ -41,7 +58,7 @@ const Popular = () => {
       <div className="w-full p-4">
         <div className="view-toggle">
           <button
-            className="button button-grid"
+            className={`button ${isTable ? 'button-unselected' : 'button-selected'}`}
             aria-label="Grid view"
             onClick={() => setIsTable(false)}
           >
@@ -61,7 +78,7 @@ const Popular = () => {
           </button>
 
           <button
-            className="button button-table"
+            className={`button ${isTable ? 'button-selected' : 'button-unselected'}`}
             aria-label="Table view"
             onClick={() => setIsTable(true)}
           >
