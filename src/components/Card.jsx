@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Star, ThumbsUp } from 'lucide-react';
+import { TbRating18Plus } from "react-icons/tb";
 import 'styles/card.css';
 
 const MovieCard = ({ movie, aspectRatio }) => {
@@ -12,6 +13,9 @@ const MovieCard = ({ movie, aspectRatio }) => {
     return (
         <div className="movie-card">
             <div className="card-image" style={{aspectRatio: aspectRatio}}>
+                {movie.adult && (
+                    <TbRating18Plus className="card-adult-icon" />
+                )}
                 <div className="favorite-icon" onClick={toggleFavorite}>
                     <Star
                         fill={isFavorite ? '#facc15' : 'none'}
