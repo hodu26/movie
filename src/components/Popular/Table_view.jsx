@@ -112,7 +112,9 @@ const MovieTableView = ({ movies }) => {
                   <td className="table-data">{movie.rank}</td>
                   <td className="table-data">
                     <div className="movie-poster">
-											<TbRating18Plus className="adult-icon" />
+                      {movie.adult && (
+                          <TbRating18Plus className="adult-icon" />
+                      )}
                       <img src={movie.poster_path} alt={movie.original_title} />
                     </div>
                   </td>
