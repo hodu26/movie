@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import MovieTable from 'components/Popular/Table_view';
 import MovieGrid from 'components/Popular/Grid_view';
 import SignInUp from 'components/SignInUp/Body_signin_up';
 import 'styles/Popular/body_popular.css';
@@ -7,7 +8,7 @@ import 'styles/Popular/body_popular.css';
 const Popular = () => {
   const navigate = useNavigate();
   const [isLogin, setIsLogin] = useState(false); // 로딩 상태
-  const [isTable, setIsTable] = useState(false); // grid view <-> Grid view
+  const [isTable, setIsTable] = useState(false); // Table view <-> Grid view
 
   useEffect(() => {
     // 로그인 확인
@@ -24,9 +25,14 @@ const Popular = () => {
   // 영화 데이터
   const movies = Array.from({ length: 30 }, (_, i) => ({
     id: i + 1,
-    title: `Movie ${i + 1}`,
-    image: require('assets/image/venom.jpg'),
-    rating: (Math.random() * 5).toFixed(1),
+    rank: i + 1,
+    original_title: `Movie ${i + 1}`,
+    poster_path: require('assets/image/venom.jpg'),
+    genre_ids: ['액션', "SF"],
+    release_date: "2024-10-22",
+    overview: "환상의 케미스트리의 액션 블록과 그의 심비오트 베놈은 그들을 노리는 정체불명 존재의 추격을 피해 최어드워을 다니게 된다...",
+    vote_average: (Math.random() * 5).toFixed(1),
+    adult: true,
   }));
 
   return (
@@ -79,7 +85,7 @@ const Popular = () => {
       {/* 영화 Grid <-> Table 섹션 */}
       <div className='view-container'>
         {isTable ? (
-          <MovieGrid movies={movies} />
+          <MovieTable movies={movies} />
         ) : (
           <MovieGrid movies={movies} />
         )}
