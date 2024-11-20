@@ -19,12 +19,12 @@ const MovieCard = ({ movie, aspectRatio }) => {
                         strokeWidth="1.5"
                     />
                 </div>
-                <img src={movie.image} alt={movie.title} />
+                <img src={movie.poster_path} alt={movie.original_title} />
                 <div className="card-overlay">
-                    <p className="movie-title">{movie.title}</p>
+                    <p className="movie-title">{movie.original_title}</p>
                     <div className="rating">
                         <ThumbsUp className="thumbs-icon" />
-                        <span>{movie.rating}</span>
+                        <span>{movie.vote_average}</span>
                     </div>
                 </div>
             </div>
