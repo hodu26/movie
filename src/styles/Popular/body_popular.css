@@ -24,21 +24,21 @@
   transition: background-color 0.3s;
 }
 
-/* Grid 버튼 */
-.view-toggle .button-grid {
+/* 현재 선택된 버튼 */
+.view-toggle .button-selected {
   background-color: #3b82f6;
 }
 
-.view-toggle .button-grid:hover {
+.view-toggle .button-selected:hover {
   background-color: #2563eb;
 }
 
-/* List 버튼 */
-.view-toggle .button-table {
+/* 현재 선택되지 않은 버튼 */
+.view-toggle .button-unselected {
   background-color: #4b5563;
 }
 
-.view-toggle .button-table:hover {
+.view-toggle .button-unselected:hover {
   background-color: #374151;
 }
 
