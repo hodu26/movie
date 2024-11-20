@@ -11,10 +11,10 @@ const Popular = () => {
       <Header />
 
       <div className="flex-grow mt-[4rem]">
-      {/* 로딩 화면 */}
-      <Suspense
+        {/* 로딩 화면 */}
+        <Suspense
           fallback={
-            <div className="flex-grow h-[100%] justify-center items-center bg-gray-900">
+            <div className="flex-grow h-[100%] justify-center items-center bg-[#181818]">
               <LoadingSpinner />
             </div>
           }

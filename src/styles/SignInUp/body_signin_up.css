@@ -9,7 +9,7 @@
 }
 
 .signin-container {
-  min-height: 100vh;
+  min-height: 100%;
   background: linear-gradient(to bottom, #181818, #1A1A1A, #2B2B2B);
   padding: 2rem;
 }
