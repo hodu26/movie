@@ -1,11 +1,9 @@
 import 'styles/loading.css';
 
 const LoadingSpinner = () => (
-    <div className="loaderContainer">
-      <div className='spinner'></div>
-      <p>Loading...</p>
-    </div>
-  );
-  
-  export default LoadingSpinner;
-  
+  <div className="loading-container">
+    <div className="loading-spinner"></div>
+  </div>
+);
+
+export default LoadingSpinner;
