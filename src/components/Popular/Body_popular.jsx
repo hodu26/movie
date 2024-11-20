@@ -40,7 +40,7 @@ const Popular = () => {
   if (!isLogin) return <SignInUp />
 
   // 영화 데이터
-  const movies = Array.from({ length: 30 }, (_, i) => ({
+  const movies = Array.from({ length: 10000 }, (_, i) => ({
     id: i + 1,
     rank: i + 1,
     original_title: `Movie ${i + 1}`,
