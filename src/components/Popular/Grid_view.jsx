@@ -11,7 +11,7 @@ const GridView = ({ movies }) => {
   // 스크롤이 하단에 가까워지면 더 많은 영화를 불러오는 함수
   // useCallback을 사용하여 loadMoreMovies를 메모이제이션
   const loadMoreMovies = useCallback(() => {
-    if (isLoading) return;
+    if (isLoading || !movies.length) return;
 
     setIsLoading(true);
     setTimeout(() => {
@@ -48,11 +48,6 @@ const GridView = ({ movies }) => {
       }
     };
   }, [isLoading, loadMoreMovies]);
-
-  // 페이지가 처음 로드될 때 최소 개수만큼 보여줌
-  useEffect(() => {
-    loadMoreMovies();
-  }, [movies, loadMoreMovies]);
 
   return (
     <div>
