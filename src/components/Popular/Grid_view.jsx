@@ -43,7 +43,7 @@ const GridView = ({ movies }) => {
   })
 
   const totalPages = Math.ceil(movies.length / moviesPerPage);
-  
+
   // 페이지 이동 핸들러
   const handlePrevPage = () => setCurrentPage((prev) => Math.max(prev - 1, 1));
   const handleNextPage = () => setCurrentPage((prev) => Math.min(prev + 1, totalPages));
@@ -57,9 +57,9 @@ const GridView = ({ movies }) => {
   return (
     <div>
       <div className="movie-grid">
-          {currentMovies.map((movie) => (
+        {currentMovies.map((movie) => (
           <MovieCard key={movie.id} movie={movie} aspectRatio="4 / 5" />
-          ))}
+        ))}
       </div>
 
       {/* 페이지네이션 */}
