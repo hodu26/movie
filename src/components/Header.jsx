@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { User, Menu } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import 'styles/header.css';
 
 const Header = () => {
+    const [email, setEmail] = useState('');
     const [isSidebarOpen, setSidebarOpen] = useState(false);
     const navigate = useNavigate();
 
@@ -32,6 +33,13 @@ const Header = () => {
 
     const toggleSidebar = () => setSidebarOpen(!isSidebarOpen);
 
+    // 로컬스토리지에서 데이터 로드
+    useEffect(() => {
+        const savedEmail = localStorage.getItem('email');
+
+        setEmail(savedEmail);
+    }, []);
+
     return (
         <>
             {/* 헤더 */}
@@ -57,6 +65,7 @@ const Header = () => {
 
                     {/* 유저 프로필 */}
                     <div className="user-profile">
+                        <span className='user-email'>{email}</span>
                         <button onClick={handleProfile}>
                             <User className="w-6 h-6 text-white" />
                         </button>
