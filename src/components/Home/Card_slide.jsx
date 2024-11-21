@@ -10,36 +10,33 @@ const MovieCategory = ({ title, tag, genres }) => {
     const [isTouching, setIsTouching] = useState(false);
     const [startX, setStartX] = useState(0);
     const [scrollLeft, setScrollLeft] = useState(0);
-    const [movies, setMovies] = useState([])
+    const [url, setUrl] = useState('');
+    const [movies, setMovies] = useState([]);
 
     useEffect(() => {
         if (movies.length) return ;
             
-        if (tag === "popular" || tag === "now_playing") {
-            const fetchRank = async () => {
-                const url = `${API_URL}/movie/${tag}?api_key=${savedTMDbKey}&language=ko-KR`;
-                const data = await fetchData(url, tag);
+        const fetchMovies = async () => {
 
-                setMovies(data.results);    
+            if (tag === "popular" || tag === "now_playing") {
+                setUrl(`${API_URL}/movie/${tag}?api_key=${savedTMDbKey}&language=ko-KR`); 
+            }
+            else {
+                // 장르의 id 찾기
+                const findGenre = genres.find(genre => genre.name === tag); 
+                const findGenreId = findGenre ? Number(findGenre.id) : null;
+
+                setUrl(`${API_URL}/discover/movie?api_key=${savedTMDbKey}&include_adult=true&with_genres=${findGenreId}&language=ko-KR&sort_by=popularity.desc`);
             }
 
-            fetchRank();
+            const data = await fetchData(url, tag);
+
+            setMovies(data.results || []);
         }
-        else {
-            // 장르의 id 찾기
-            const findGenre = genres.find(genre => genre.name === tag); 
-            const findGenreId = findGenre ? Number(findGenre.id) : null;
 
-            const fetchMovies = async () => {
-                const url = `${API_URL}/discover/movie?api_key=${savedTMDbKey}&include_adult=true&with_genres=${findGenreId}&language=ko-KR&sort_by=popularity.desc`;
-                const data = await fetchData(url, tag);
+        fetchMovies();
 
-                setMovies(data.results);
-            }
-
-            fetchMovies();
-        }
-    }, [movies, tag, genres])
+    }, [movies, url, tag, genres])
 
     const isTouchDevice = () => 'ontouchstart' in window || navigator.maxTouchPoints > 0;
 

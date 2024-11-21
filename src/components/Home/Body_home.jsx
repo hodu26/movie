@@ -25,6 +25,8 @@ const Home = () => {
             <MovieCategory title="인기 영화" tag="popular" genres={genres} />
             <MovieCategory title="최신 영화" tag="now_playing" genres={genres} />
             <MovieCategory title="액션 영화" tag="액션" genres={genres} />
+            <MovieCategory title="코미디 영화" tag="코미디" genres={genres} />
+            <MovieCategory title="공포 영화" tag="공포" genres={genres} />
         </div>
     );
 };
