@@ -5,7 +5,9 @@
       "assets/*": ["assets/*"],
       "components/*": ["components/*"],
       "pages/*": ["pages/*"],
-      "styles/*": ["styles/*"]
+      "styles/*": ["styles/*"],
+      "hooks/*": ["hooks/*"],
+      "utils/*": ["utils/*"]
     }
   },
   "include": ["src"]

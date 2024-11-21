@@ -1,4 +1,5 @@
 import { useState, useEffect, createContext, useContext } from 'react';
+import { fetchData } from 'utils/dataLoad';
 
 const GenreContext = createContext();
 
@@ -7,7 +8,6 @@ export const useGenres = () => useContext(GenreContext);
 export const GenreProvider = ({ children }) => {
     const [genres, setGenres] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
 
     useEffect(() => {
         const savedTMDbKey = localStorage.getItem('TMDb-Key');
@@ -26,31 +26,17 @@ export const GenreProvider = ({ children }) => {
         } else {
             // 데이터가 없거나 만료되었으면 API 호출
             const fetchGenres = async () => {
-                try {
-                    const response = await fetch(`https://api.themoviedb.org/3/genre/movie/list?api_key=${savedTMDbKey}&language=ko`, {
-                        headers: {
-                            Accept: 'application/json',
-                        },
-                    });
-
-                    if (!response.ok) {
-                        throw new Error('Failed to fetch genres');
-                    }
-
-                    const data = await response.json();
-                    const genreData = data.genres;
-
-                    // 로컬 스토리지에 데이터 저장 (만료 시간도 함께 저장)
-                    localStorage.setItem('genres', JSON.stringify(genreData));
-                    localStorage.setItem('genresTimestamp', currentTime.toString()); // 타임스탬프 저장
-
-                    setGenres(genreData);
-                    setLoading(false);
-                } catch (error) {
-                    console.error('Error fetching genres:', error);
-                    setError('장르 정보를 불러오는 데 실패했습니다.');
-                    setLoading(false);
+                const url = `https://api.themoviedb.org/3/genre/movie/list?api_key=${savedTMDbKey}&language=ko`;
+                const data = await fetchData(url, "장르");
+            
+                if (data !== null) {
+                    // 데이터가 성공적으로 로드되었을 때
+                    localStorage.setItem('genres', JSON.stringify(data.genres));
+                    localStorage.setItem('genresTimestamp', currentTime.toString());
                 }
+            
+                setGenres(data.genres);
+                setLoading(false);
             };
 
             fetchGenres();
@@ -58,7 +44,7 @@ export const GenreProvider = ({ children }) => {
     }, []);
 
     return (
-        <GenreContext.Provider value={{ genres, loading, error }}>
+        <GenreContext.Provider value={{ genres, loading }}>
             {children}
         </GenreContext.Provider>
     );
