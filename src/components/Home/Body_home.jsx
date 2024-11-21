@@ -1,14 +1,26 @@
 import React from 'react';
+import { toast } from 'react-toastify';
 import useAuthCheck from 'hooks/useAuthCheck';
 import HeroSection from 'components/Home/Hero_section'
 import MovieCategory from 'components/Home/Card_slide'
 import LoadingSpinner from 'components/Loading';
+import { useGenres } from 'hooks/genreLoad';
 import 'styles/Home/body_home.css';
 
 const Home = () => {
+    // 장르 정보 불러오기
+    const { genres, loading, error } = useGenres();
+
     // 로그인 확인
     const isLogin = useAuthCheck();
-    if (!isLogin) return <LoadingSpinner />
+    if (!isLogin || loading) return <LoadingSpinner />
+    if (error) return toast.error(`${error.message}`)
+
+    // 액션 장르의 id 찾기
+    const actionGenre = genres.find(genre => genre.name === '액션'); 
+    const actionGenreId = actionGenre ? actionGenre.id : null;
+
+    console.log(actionGenreId); // 액션 장르의 id 출력
 
     const movies = {
         popular: [

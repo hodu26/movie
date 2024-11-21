@@ -4,6 +4,8 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'; // Toast 스타일
 import { TransitionGroup, CSSTransition } from 'react-transition-group'; // Transition 라이브러리
 
+import { GenreProvider } from 'hooks/genreLoad';  // GenreContext를 import
+
 import Home from 'pages/Home';
 import SignInUp from 'pages/SignInUp';
 import Popular from 'pages/Popular';
@@ -11,24 +13,28 @@ import NotFound from 'pages/404NotFound';
 
 function App() {
   return (
-    <Router basename="/movie">
-      <PageTransitions />
+    <GenreProvider>
 
-      {/* ToastContainer를 앱에 추가 */}
-      <ToastContainer 
-        position="top-right"
-        autoClose={1000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false} // 오른쪽에서 왼쪽 정렬 (기본: 왼쪽에서 오른쪽)
-        pauseOnFocusLoss // 포커스를 잃으면 일시 중지
-        draggable
-        pauseOnHover
-        limit={3} // 최대 3개의 Toast만 표시
-      />
+      <Router basename="/movie">
+        <PageTransitions />
 
-    </Router>
+        {/* ToastContainer를 앱에 추가 */}
+        <ToastContainer 
+          position="top-right"
+          autoClose={1000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false} // 오른쪽에서 왼쪽 정렬 (기본: 왼쪽에서 오른쪽)
+          pauseOnFocusLoss // 포커스를 잃으면 일시 중지
+          draggable
+          pauseOnHover
+          limit={3} // 최대 3개의 Toast만 표시
+        />
+
+      </Router>
+
+    </GenreProvider>
   );
 }
 
