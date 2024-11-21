@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import useAuthCheck from 'hooks/useAuthCheck';
 import MovieTable from 'components/Popular/Table_view';
 import MovieGrid from 'components/Popular/Grid_view';
 import SignInUp from 'components/SignInUp/Body_signin_up';
 import 'styles/Popular/body_popular.css';
 
 const Popular = () => {
-  const navigate = useNavigate();
-  const [isLogin, setIsLogin] = useState(false); // 로그인 상태
   const [isTable, setIsTable] = useState(null); // Table view <-> Grid view
+
+  // 로그인 확인
+  const isLogin = useAuthCheck();
 
   // isTable 값이 변경될 때 로컬 스토리지에 저장
   useEffect(() => {
@@ -18,13 +19,7 @@ const Popular = () => {
   }, [isTable]);
 
   useEffect(() => {
-    // 로그인 확인
-    const savedTMDbKey = localStorage.getItem('TMDb-Key');
-
-    if (!savedTMDbKey) {
-      navigate('/signin');
-    }
-    else setIsLogin(true);
+    if (!isLogin) return;
 
     // 로컬 스토리지에서 isTable 값을 가져와 초기화
     const savedView = localStorage.getItem('isTable');
@@ -36,7 +31,7 @@ const Popular = () => {
       setIsTable(false);
     }
     
-  }, [navigate])
+  }, [isLogin])
   if (!isLogin) return <SignInUp />
 
   // 영화 데이터
