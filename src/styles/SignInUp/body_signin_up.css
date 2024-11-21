@@ -98,6 +98,10 @@ body {
   color: #fff;
 }
 
+.register-form .input-group {
+  margin-bottom: 15px;
+}
+
 .checkbox-group {
   font-size: 10px;
   font-weight: 600;
@@ -155,6 +159,12 @@ body {
 .checkbox-group input[type="checkbox"]:focus + .checkmark {
   outline: none;
   box-shadow: 0 0 3px #7a4caf;
+}
+
+.register-form .checkbox-group {
+  margin-top: -10px;
+  margin-bottom: 7px;
+  margin-left: -183px;
 }
 
 .forgot-password {

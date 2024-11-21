@@ -8,6 +8,7 @@ function LoginRegister() {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
+  const [agreeTerms, setAgreeTerms] = useState(false);
   const navigate = useNavigate();
 
   // 로컬스토리지에서 데이터 로드
@@ -65,8 +66,13 @@ function LoginRegister() {
       return;
     }
 
-    if (password !== confirmPassword) {
+    if (!password || password !== confirmPassword) {
       alert('비밀번호가 일치하지 않습니다.');
+      return;
+    }
+
+    if (!agreeTerms) {
+      alert('약관 확인 후 동의해주시기 바랍니다.');
       return;
     }
 
@@ -98,6 +104,7 @@ function LoginRegister() {
 
     setPassword('');
     setConfirmPassword('');
+    setAgreeTerms(false);
     setRememberMe(savedRememberMe);
     setIsLogin(!isLogin);
   };
@@ -177,6 +184,17 @@ function LoginRegister() {
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
                 />
+              </div>
+              <div className="checkbox-group">
+                <label>
+                  <input
+                    type="checkbox"
+                    checked={agreeTerms}
+                    onChange={() => setAgreeTerms(!agreeTerms)}
+                  />{' '}
+                  <span className="checkmark"></span>
+                  약관 확인 및 동의
+                </label>
               </div>
               <button className="btn" onClick={handleRegister}>
                 회원가입
