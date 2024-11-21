@@ -2,13 +2,13 @@ import React from 'react';
 import useAuthCheck from 'hooks/useAuthCheck';
 import HeroSection from 'components/Home/Hero_section'
 import MovieCategory from 'components/Home/Card_slide'
-import SignInUp from 'components/SignInUp/Body_signin_up';
+import LoadingSpinner from 'components/Loading';
 import 'styles/Home/body_home.css';
 
 const Home = () => {
     // 로그인 확인
     const isLogin = useAuthCheck();
-    if (!isLogin) return <SignInUp />
+    if (!isLogin) return <LoadingSpinner />
 
     const movies = {
         popular: [

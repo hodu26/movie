@@ -36,3 +36,25 @@
     transform: rotate(360deg);
   }
 }
+
+/* 페이지 내용에만 fade 효과 적용 */
+.page-content {
+  transition: opacity 50ms ease-in;
+}
+
+.fade-enter {
+  opacity: 0;
+}
+
+.fade-enter-active {
+  opacity: 1;
+}
+
+.fade-exit {
+  opacity: 1;
+}
+
+.fade-exit-active {
+  opacity: 0;
+  transition: opacity 50ms ease-in;
+}
