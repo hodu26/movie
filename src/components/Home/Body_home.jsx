@@ -1,24 +1,13 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React from 'react';
+import useAuthCheck from 'hooks/useAuthCheck';
 import HeroSection from 'components/Home/Hero_section'
 import MovieCategory from 'components/Home/Card_slide'
 import SignInUp from 'components/SignInUp/Body_signin_up';
 import 'styles/Home/body_home.css';
 
 const Home = () => {
-    const navigate = useNavigate();
-    const [isLogin, setIsLogin] = useState(false); // 로딩 상태
-
     // 로그인 확인
-    useEffect(() => {
-        const savedTMDbKey = localStorage.getItem('TMDb-Key');
-
-        if (!savedTMDbKey) {
-            navigate('/signin');
-        }
-        else setIsLogin(true);
-
-    }, [navigate]);
+    const isLogin = useAuthCheck();
     if (!isLogin) return <SignInUp />
 
     const movies = {
