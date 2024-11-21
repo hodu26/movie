@@ -45,6 +45,19 @@
 }
 
 /* 유저 프로필 */
+.user-profile {
+  display: flex;
+  align-items: self-end;
+  position: relative;
+}
+
+.user-profile .user-email {
+  position: absolute;
+  color: #d1d5db97;
+  font-size: 0.8rem;
+  right: 90%;
+}
+
 .user-profile button {
   padding: 0.25rem;
   border-radius: 50%;
@@ -133,5 +146,9 @@
 
   .sidebar {
     display: none;
+  }
+
+  .user-profile .user-email {
+    font-size: 1rem;
   }
 }
