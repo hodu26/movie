@@ -12,9 +12,9 @@
   transition: background 0.5s ease-in-out; /* 배경색 변화 애니메이션 */
 }
 
-/* 마우스를 가져다 놓을 시 더 어두운 배경 및 투명도 증가 */
+/* 마우스를 가져다 놓을 시 더 밝은 배경 및 투명도 증가 */
 .header:hover {
-  background: #242424a2; /* 마우스를 올렸을 때 배경색 어두워짐 + 투명도 증가 */
+  background: #242424a2; /* 마우스를 올렸을 때 배경색 밝아짐 + 투명도 증가 */
 }
 
 .header .nav-container {
