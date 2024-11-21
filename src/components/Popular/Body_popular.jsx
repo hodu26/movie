@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import useAuthCheck from 'hooks/useAuthCheck';
 import MovieTable from 'components/Popular/Table_view';
 import MovieGrid from 'components/Popular/Grid_view';
-import SignInUp from 'components/SignInUp/Body_signin_up';
+import LoadingSpinner from 'components/Loading';
 import 'styles/Popular/body_popular.css';
 
 const Popular = () => {
@@ -32,7 +32,7 @@ const Popular = () => {
     }
     
   }, [isLogin])
-  if (!isLogin) return <SignInUp />
+  if (!isLogin) return <LoadingSpinner />
 
   // 영화 데이터
   const movies = Array.from({ length: 10000 }, (_, i) => ({

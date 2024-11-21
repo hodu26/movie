@@ -7,7 +7,7 @@ const Body = React.lazy(() => import('components/Popular/Body_popular'));
 
 const Popular = () => {
   return (
-    <div className="w-full h-screen flex flex-col mx-auto bg-[#fff]">
+    <div className="w-full h-screen flex flex-col mx-auto bg-[#181818]">
       <Header />
 
       <div className="flex-grow mt-[4rem]">
