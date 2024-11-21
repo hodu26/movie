@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import 'styles/SignInUp/body_signin_up.css';
 
 function LoginRegister() {
@@ -33,7 +34,7 @@ function LoginRegister() {
     const savedUsers = JSON.parse(localStorage.getItem('users')) || {};
 
     if (!validateEmail(email)) {
-      alert('이메일 형식이 올바르지 않습니다.');
+      toast.error('이메일 형식이 올바르지 않습니다.');
       return;
     }
 
@@ -42,13 +43,15 @@ function LoginRegister() {
       localStorage.setItem('rememberMe', rememberMe);
       localStorage.setItem('TMDb-Key', password);
 
+      toast.success(`안녕하세요, ${email}님!`);
+
       setEmail('');
       setPassword('');
       setRememberMe(false);
 
       navigate('/');
     } else {
-      alert('이메일 또는 비밀번호가 올바르지 않습니다.');
+      toast.error('이메일 또는 비밀번호가 올바르지 않습니다.');
     }
   };
 
@@ -57,22 +60,22 @@ function LoginRegister() {
     const savedUsers = JSON.parse(localStorage.getItem('users')) || {};
 
     if (!validateEmail(email)) {
-      alert('이메일 형식이 올바르지 않습니다.');
+      toast.error('이메일 형식이 올바르지 않습니다.');
       return;
     }
 
     if (savedUsers[email]) {
-      alert('이미 등록된 이메일입니다.');
+      toast.error('이미 등록된 이메일입니다.');
       return;
     }
 
     if (!password || password !== confirmPassword) {
-      alert('비밀번호가 일치하지 않습니다.');
+      toast.error('비밀번호가 일치하지 않습니다.');
       return;
     }
 
     if (!agreeTerms) {
-      alert('약관 확인 후 동의해주시기 바랍니다.');
+      toast.error('약관 확인 후 동의해주시기 바랍니다.');
       return;
     }
 
@@ -93,6 +96,7 @@ function LoginRegister() {
     setPassword('');
     setConfirmPassword('');
     setIsLogin(true); // 회원가입 후 로그인 화면으로 변경
+    toast.success(`${email}님 회원이 되신 것을 환영합니다.`);
   };
 
   const toggleForm = () => {

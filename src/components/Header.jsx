@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { User, Menu } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import 'styles/header.css';
 
 const Header = () => {
@@ -23,7 +24,7 @@ const Header = () => {
             }
             
             localStorage.removeItem('TMDb-Key');
-            alert('로그아웃 되었습니다.');
+            toast.success('로그아웃 되었습니다.');
         }
         
         navigate('/signin');
