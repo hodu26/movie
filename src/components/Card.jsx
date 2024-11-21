@@ -24,7 +24,7 @@ const MovieCard = ({ movie, aspectRatio }) => {
                         strokeWidth="1.5"
                     />
                 </div>
-                <img src={`${IMAGE_BASE_URL}/original${movie.poster_path}`} alt={movie.original_title} />
+                <img src={ movie.poster_path !== null ? `${IMAGE_BASE_URL}/original${movie.poster_path}` : require('assets/image/no-poster-image.png') } alt={movie.original_title} />
                 <div className="card-overlay">
                     <p className="movie-title">{movie.title}</p>
                     <div className="rating">
