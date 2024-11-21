@@ -1,13 +1,45 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { fetchData } from 'utils/dataLoad';
+import { API_URL, savedTMDbKey } from 'components/config';
 import MovieCard from 'components/Card';
 import 'styles/Home/card_slide.css';
 
-const MovieCategory = ({ title, movies, id }) => {
+const MovieCategory = ({ title, tag, genres }) => {
     const containerRef = useRef(null);
     const [isTouching, setIsTouching] = useState(false);
     const [startX, setStartX] = useState(0);
     const [scrollLeft, setScrollLeft] = useState(0);
+    const [movies, setMovies] = useState([])
+
+    useEffect(() => {
+        if (movies.length) return ;
+            
+        if (tag === "popular" || tag === "now_playing") {
+            const fetchRank = async () => {
+                const url = `${API_URL}/movie/${tag}?api_key=${savedTMDbKey}&language=ko-KR`;
+                const data = await fetchData(url, tag);
+
+                setMovies(data.results);    
+            }
+
+            fetchRank();
+        }
+        else {
+            // 장르의 id 찾기
+            const findGenre = genres.find(genre => genre.name === tag); 
+            const findGenreId = findGenre ? Number(findGenre.id) : null;
+
+            const fetchMovies = async () => {
+                const url = `${API_URL}/discover/movie?api_key=${savedTMDbKey}&include_adult=true&with_genres=${findGenreId}&language=ko-KR&sort_by=popularity.desc`;
+                const data = await fetchData(url, tag);
+
+                setMovies(data.results);
+            }
+
+            fetchMovies();
+        }
+    }, [movies, tag, genres])
 
     const isTouchDevice = () => 'ontouchstart' in window || navigator.maxTouchPoints > 0;
 
@@ -52,7 +84,7 @@ const MovieCategory = ({ title, movies, id }) => {
                 onTouchEnd={handleTouchEnd}
             >
                 <div
-                    id={id}
+                    id={tag}
                     className="movie-scroll-area"
                     ref={containerRef}
                 >
@@ -61,14 +93,14 @@ const MovieCategory = ({ title, movies, id }) => {
                     ))}
                 </div>
                 <button
-                    onClick={() => scroll('left', id)}
+                    onClick={() => scroll('left', tag)}
                     className="scroll-button scroll-left"
                     aria-label="Scroll Left"
                 >
                     <ChevronLeft className="text-white" />
                 </button>
                 <button
-                    onClick={() => scroll('right', id)}
+                    onClick={() => scroll('right', tag)}
                     className="scroll-button scroll-right"
                     aria-label="Scroll Right"
                 >
