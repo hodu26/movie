@@ -1,51 +1,73 @@
 import React, { useEffect, useState } from 'react';
 import { ChevronDown, ChevronUp, ThumbsUp, Star, ChevronLeft, ChevronRight } from 'lucide-react';
 import { TbRating18Plus } from "react-icons/tb";
+import { useSelector, useDispatch } from 'react-redux';
+import { fetchPopularMovies } from '../../redux/movieSlice';
+import { useGenres } from 'hooks/genreLoad';
 import { IMAGE_BASE_URL } from 'api/index';
+import LoadingSpinner from 'components/Loading';
 import 'styles/Popular/table_view.css';
 
-const MovieTableView = ({ movies }) => {
+const MovieTableView = () => {
+  // 장르 정보 불러오기
+  const { genres, loading } = useGenres();
+
+  const dispatch = useDispatch();
+  const { movies, page, isLoading, totalPages } = useSelector((state) => state.movies);
   const [currentPage, setCurrentPage] = useState(1);
-	const [moviesPerPage, setMoviesPerPage] = useState(24);
+  const [moviesPerPage, setMoviesPerPage] = useState(24);
   const [sortColumn, setSortColumn] = useState('rank');
   const [sortDirection, setSortDirection] = useState('asc');
 
+  const [currentPageInput, setCurrentPageInput] = useState(currentPage);
+
+  // 화면 크기 계산 및 화면에 로드할 영화 개수 지정
   useEffect(() => {
-    // 한페이지 영화 개수 계산
     const updateMoviesPerPage = () => {
-			const windowWidth = window.innerWidth;
-      const windowHeight = window.innerHeight; // 화면 높이
+      const windowWidth = window.innerWidth;
+      const windowHeight = window.innerHeight;
       const containerGapHeight = 15 * 16; // 15rem
-      let movieHeight;
-
-      if (windowWidth < 768) { // 모바일
-        movieHeight = 4.5 * 16; // 4.5rem
-      }
-      else { // 웹
-        movieHeight = 8 * 16; // 8rem
-      }
-
+      const movieHeight = windowWidth < 768 ? 4.5 * 16 : 8.5 * 16; // 4.5rem : 8.5rem
       const maxRows = Math.floor((windowHeight - containerGapHeight) / movieHeight);
-
       setMoviesPerPage(maxRows);
     };
 
-    // 화면 크기 변화 시 다시 계산하도록 이벤트 리스너 추가
     window.addEventListener('resize', updateMoviesPerPage);
     updateMoviesPerPage();
 
-    // 컴포넌트가 unmount 될 때 리스너 제거
     return () => {
       window.removeEventListener('resize', updateMoviesPerPage);
     };
-  })
+  }, []);
 
-	const totalPages = Math.ceil(movies.length / moviesPerPage);
+  // 페이지 네이션 입력한 페이지로 전환
+  useEffect(() => {
+    setCurrentPageInput(currentPage);
+  }, [currentPage]);
 
-  // 페이지 이동 핸들러
+  const handlePageInputChange = (e) => {
+    const inputValue = e.target.value;
+    // 입력값이 숫자인지 확인하고 1보다 작으면 기본값 유지
+    if (inputValue === '' || isNaN(inputValue)) { 
+      setCurrentPage(''); // 빈 값으로 설정
+    } else {
+      setCurrentPage(Math.max(1, Math.min(Number(inputValue), endPages))); // 최소 1, 최대 페이지 제한
+    }
+  };
+  if (loading) return <LoadingSpinner />
+
+  const endPages = Math.ceil(movies.length / moviesPerPage);
+
   const handlePrevPage = () => setCurrentPage((prev) => Math.max(prev - 1, 1));
-  const handleNextPage = () => setCurrentPage((prev) => Math.min(prev + 1, totalPages));
+  const handleNextPage = () => { 
+    setCurrentPage((prev) => Math.min(prev + 1, endPages));
 
+    if (!isLoading && currentPage+1 === endPages && page < totalPages) {
+      dispatch(fetchPopularMovies(page + 1));
+    }
+  };
+
+  // 정렬 기준 설정
   const handleSort = (column) => {
     if (sortColumn === column) {
       setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
@@ -62,15 +84,20 @@ const MovieTableView = ({ movies }) => {
       <ChevronDown className="w-4 h-4" />;
   };
 
-	// 정렬된 데이터 계산
   const sortedMovies = [...movies].sort((a, b) => {
+    let compareA = a[sortColumn];
+    let compareB = b[sortColumn];
+
+    // null 값 처리
+    if (compareA === null) compareA = '';
+    if (compareB === null) compareB = '';
+
     if (sortDirection === 'asc') {
-      return a[sortColumn] > b[sortColumn] ? 1 : -1;
+      return compareA > compareB ? 1 : -1;
     }
-    return a[sortColumn] < b[sortColumn] ? 1 : -1;
+    return compareA < compareB ? 1 : -1;
   });
 
-  // 현재 페이지에 표시할 영화
   const currentMovies = sortedMovies.slice(
     (currentPage - 1) * moviesPerPage,
     currentPage * moviesPerPage
@@ -99,9 +126,7 @@ const MovieTableView = ({ movies }) => {
                   >
                     <div className="flex items-center">
                       <span>{column.label}</span>
-                      {column.key !== 'favorite' && (
-                        <SortIcon column={column.key} />
-                      )}
+                      {column.key !== 'favorite' && <SortIcon column={column.key} />}
                     </div>
                   </th>
                 ))}
@@ -113,20 +138,32 @@ const MovieTableView = ({ movies }) => {
                   <td className="table-data">{movie.rank}</td>
                   <td className="table-data">
                     <div className="movie-poster">
-                      {movie.adult && (
-                          <TbRating18Plus className="adult-icon" />
-                      )}
-                      <img src={ movie.poster_path !== null ? `${IMAGE_BASE_URL}/original${movie.poster_path}` : require('assets/image/no-poster-image.png') } alt={movie.original_title} />
+                      {movie.adult && <TbRating18Plus className="adult-icon" />}
+                      <img 
+                        src={movie.poster_path ? `${IMAGE_BASE_URL}/original${movie.poster_path}` : require('assets/image/no-poster-image.png')}
+                        alt={movie.original_title}
+                      />
                     </div>
                   </td>
                   <td className="table-data">
                     <div className="table-movie-title">
                       <span className="title">{movie.title}</span>
                       <span className="description">{movie.overview}</span>
-											<span className="description">...</span>
+                      <span className="description">...</span>
                     </div>
                   </td>
-                  <td className="table-data">{movie.genre_ids}</td>
+                  <td className="table-data">
+                    <div className="genres-container">
+                      {movie.genre_ids.map((genre_id) => {
+                        const genre = genres.find((g) => g.id === genre_id);
+                        return genre ? (
+                          <span key={genre_id} className="genre-tag">
+                            {genre.name}
+                          </span>
+                        ) : null;
+                      })}
+                    </div>
+                  </td>
                   <td className="table-data">{movie.release_date}</td>
                   <td className="table-data">
                     <div className="vote-wrapper">
@@ -136,7 +173,8 @@ const MovieTableView = ({ movies }) => {
                   </td>
                   <td className="table-data">
                     <button className="favorite-button">
-                      <Star className='star-icon'
+                      <Star 
+                        className='star-icon'
                         fill={false ? '#facc15' : 'none'}
                         stroke="#facc15"
                         strokeWidth="1.5"
@@ -149,22 +187,34 @@ const MovieTableView = ({ movies }) => {
           </table>
         </div>
 
-        {/* 페이지네이션 */}
-				<div className="pagination" >
-					<button
-						onClick={handlePrevPage}
-						disabled={currentPage === 1}
-					>
-						<ChevronLeft className="w-6 h-6" />
-					</button>
-					<span>{`${currentPage} / ${totalPages}`}</span>
-					<button
-						onClick={handleNextPage}
-						disabled={currentPage === totalPages}
-					>
-						<ChevronRight className="w-6 h-6" />
-					</button>
-				</div >
+        <div className="pagination">
+          <button
+            onClick={handlePrevPage}
+            disabled={currentPage === 1}
+          >
+            <ChevronLeft className="w-6 h-6" />
+          </button>
+          <span className="pagination-input">
+          <input
+            type="text"
+            value={currentPageInput}
+            onChange={handlePageInputChange}
+            onBlur={() => {
+              const newPage = Math.max(1, Math.min(endPages, currentPageInput)); // 1과 endPages 사이로 제한
+              setCurrentPage(newPage);
+              setCurrentPageInput(newPage);
+            }}
+            className="page-input"
+          />
+          <span>{`/ ${endPages}`}</span>
+        </span>
+          <button
+            onClick={handleNextPage}
+            disabled={currentPage === endPages}
+          >
+            <ChevronRight className="w-6 h-6" />
+          </button>
+        </div>
       </div>
     </div>
   );

@@ -42,10 +42,16 @@ const movieSlice = createSlice({
         state.error = null;
       })
       .addCase(fetchPopularMovies.fulfilled, (state, action) => {
+        // rank 추가된 영화 데이터
+        const moviesWithRank = action.payload.movies.map((movie, index) => ({
+          ...movie,
+          rank: state.movies.length + index + 1
+        }));
+
         if (action.payload.page === 1) {
-          state.movies = action.payload.movies;
+          state.movies = moviesWithRank;
         } else {
-          state.movies = [...state.movies, ...action.payload.movies];
+          state.movies = [...state.movies, ...moviesWithRank];
         }
         state.page = action.payload.page;
         state.totalPages = action.payload.totalPages;

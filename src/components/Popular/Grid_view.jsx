@@ -1,9 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { ChevronUp } from 'lucide-react';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchPopularMovies } from '../../redux/movieSlice';
 import MovieCard from 'components/Card';
 import LoadingSpinner from 'components/Loading';
-import { ChevronUp } from 'lucide-react';
 import 'styles/Popular/grid_view.css';
 
 const GridView = () => {
@@ -21,6 +21,7 @@ const GridView = () => {
       threshold: 0.1,
     };
 
+    // 스크롤이 끝에 다다를시 추가 페이지 로드
     observerRef.current = new IntersectionObserver((entries) => {
       const [entry] = entries;
       if (entry.isIntersecting && !isLoading && page < totalPages) {
