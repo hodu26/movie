@@ -7,7 +7,9 @@
       "pages/*": ["pages/*"],
       "styles/*": ["styles/*"],
       "hooks/*": ["hooks/*"],
-      "utils/*": ["utils/*"]
+      "utils/*": ["utils/*"],
+      "redux/*": ["redux/*"],
+      "api/*": ["api/*"]
     }
   },
   "include": ["src"]
