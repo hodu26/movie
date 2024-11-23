@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Star, ThumbsUp } from 'lucide-react';
 import { TbRating18Plus } from "react-icons/tb";
-import { IMAGE_BASE_URL } from 'components/config';
+import { IMAGE_BASE_URL } from 'api/index';
 import 'styles/card.css';
 
 const MovieCard = ({ movie, aspectRatio }) => {

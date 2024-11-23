@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { fetchData } from 'utils/dataLoad';
-import { API_URL, IMAGE_BASE_URL, savedTMDbKey } from 'components/config';
+import { API_URL, IMAGE_BASE_URL, savedTMDbKey } from 'api/index';
 import 'styles/Home/hero_section.css';
 
 const HeroSection = () => {
@@ -28,7 +28,7 @@ const HeroSection = () => {
     return (
         <div className="hero-section">
             <img
-                src={ movie.poster_path !== null ? `${IMAGE_BASE_URL}/original${movie.poster_path}` : require('assets/image/no-poster-image.png') }
+                src={ movie.poster_path !== null ? `${IMAGE_BASE_URL}/original${movie.poster_path}` : require('assets/image/no-banner-image.png') }
                 alt="Hero Banner"
                 className="hero-image"
             />
