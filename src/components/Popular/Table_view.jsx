@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { ChevronDown, ChevronUp, ThumbsUp, Star, ChevronLeft, ChevronRight } from 'lucide-react';
 import { TbRating18Plus } from "react-icons/tb";
+import { IMAGE_BASE_URL } from 'api/index';
 import 'styles/Popular/table_view.css';
 
 const MovieTableView = ({ movies }) => {
@@ -115,12 +116,12 @@ const MovieTableView = ({ movies }) => {
                       {movie.adult && (
                           <TbRating18Plus className="adult-icon" />
                       )}
-                      <img src={movie.poster_path} alt={movie.original_title} />
+                      <img src={ movie.poster_path !== null ? `${IMAGE_BASE_URL}/original${movie.poster_path}` : require('assets/image/no-poster-image.png') } alt={movie.original_title} />
                     </div>
                   </td>
                   <td className="table-data">
                     <div className="table-movie-title">
-                      <span className="title">{movie.original_title}</span>
+                      <span className="title">{movie.title}</span>
                       <span className="description">{movie.overview}</span>
 											<span className="description">...</span>
                     </div>

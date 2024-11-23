@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { fetchData } from 'utils/dataLoad';
-import { API_URL, savedTMDbKey } from 'components/config';
+import { API_URL, savedTMDbKey } from 'api/index';
 import MovieCard from 'components/Card';
 import 'styles/Home/card_slide.css';
 

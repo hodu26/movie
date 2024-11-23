@@ -1,144 +1,68 @@
-import React, { useEffect, useState, useRef, useCallback } from 'react';
-import { ChevronUp } from 'lucide-react';
+import React, { useEffect, useRef, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { fetchPopularMovies } from '../../redux/movieSlice';
 import MovieCard from 'components/Card';
 import LoadingSpinner from 'components/Loading';
+import { ChevronUp } from 'lucide-react';
 import 'styles/Popular/grid_view.css';
 
-const GridView = ({ movies }) => {
-  const [moviesPerPage, setMoviesPerPage] = useState(0);
-  const [isReady, setIsReady] = useState(false); // 계산 완료 플래그
-  const [visibleMovies, setVisibleMovies] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+const GridView = () => {
+  const dispatch = useDispatch();
+  const { movies, page, isLoading, totalPages } = useSelector((state) => state.movies);
   const [showScrollToTop, setShowScrollToTop] = useState(false);
-  const observer = useRef(null);
+  const observerRef = useRef(null);
+  const loadMoreTriggerRef = useRef(null);
 
-  // 한페이지 영화 개수 계산
-  const updateMoviesPerPage = () => {
-    const windowWidth = window.innerWidth;
-    const windowHeight = window.innerHeight; // 화면 높이
-    const containerGapHeight = 6 * 16; // 9rem - 1rem
-    let movieWidth, movieHeight, containerGapWidth;
-
-    if (windowWidth < 768) { // 모바일
-      movieWidth = 10 * 16; // 8rem + 2rem
-      movieHeight = 12 * 16; // 10rem + 2rem
-      containerGapWidth = 4 * 16; // 6rem - 2rem
-    }
-    else { // 웹
-      movieWidth = 14 * 16; // 12rem + 2rem
-      movieHeight = 17 * 16; // 15rem + 2rem
-      containerGapWidth = 12 * 16; // 14rem - 2rem
-    }
-
-    const maxColumns = Math.floor((windowWidth - containerGapWidth) / movieWidth);
-    const maxRows = Math.floor((windowHeight - containerGapHeight) / movieHeight);
-
-    setMoviesPerPage(maxColumns * maxRows);
-    setIsReady(true); // 계산 완료 플래그 설정
-  };
-
+  // Intersection Observer 설정
   useEffect(() => {
-    const handleResize = () => {
-      setIsReady(false); // 리사이즈 중 상태
-      updateMoviesPerPage();
+    const options = {
+      root: null,
+      rootMargin: '100px',
+      threshold: 0.1,
     };
 
-    // 화면 크기 변화 시 다시 계산하도록 이벤트 리스너 추가
-    window.addEventListener('resize', handleResize);
+    observerRef.current = new IntersectionObserver((entries) => {
+      const [entry] = entries;
+      if (entry.isIntersecting && !isLoading && page < totalPages) {
+        dispatch(fetchPopularMovies(page + 1));
+      }
+    }, options);
 
-    if (moviesPerPage === 0) {
-      updateMoviesPerPage(); // 초기 화면 크기 계산
-    }
-
-    // 컴포넌트가 unmount 될 때 리스너 제거
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  }, [moviesPerPage]);
-
-  // 스크롤 이벤트 감지
-  useEffect(() => {
-    const handleScroll = () => {
-      // 스크롤 위치가 300px 이상 내려가면 "맨 위로" 버튼 표시
-      setShowScrollToTop(window.scrollY > 300);
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, []);
-
-  // "맨 위로" 버튼 클릭 핸들러
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-
-  // 스크롤이 하단에 가까워지면 더 많은 영화를 불러오는 함수
-  // useCallback을 사용하여 loadMoreMovies를 메모이제이션
-  const loadMoreMovies = useCallback(() => {
-    if (isLoading || !movies.length) return;
-
-    setIsLoading(true);
-    setTimeout(() => {
-      setVisibleMovies((prevMovies) => {
-        const nextMovies = movies.slice(0, prevMovies.length + moviesPerPage);
-        return nextMovies;
-      });
-      setIsLoading(false);
-      console.log(moviesPerPage)
-    }, 1000);  // 딜레이를 두어 로딩 상태 효과 주기
-  }, [isLoading, movies, moviesPerPage]); // isLoading과 movies가 변경될 때마다 loadMoreMovies가 다시 정의됨
-
-  // IntersectionObserver로 스크롤 이벤트 감지
-  useEffect(() => {
-    if (!isReady) return; // 준비 상태가 아니면 실행하지 않음
-
-    const loadMoreTrigger = document.querySelector('#load-more-trigger');
-
-    if (!observer.current) {
-      observer.current = new IntersectionObserver(
-        (entries) => {
-          if (entries[0].isIntersecting && !isLoading) {
-            loadMoreMovies();
-          }
-        },
-        { threshold: 0.5 }
-      );
-    }
-
-    if (loadMoreTrigger) {
-      observer.current.observe(loadMoreTrigger);
+    if (loadMoreTriggerRef.current) {
+      observerRef.current.observe(loadMoreTriggerRef.current);
     }
 
     return () => {
-      if (loadMoreTrigger && observer.current) {
-        observer.current.unobserve(loadMoreTrigger);
+      if (observerRef.current) {
+        observerRef.current.disconnect();
       }
     };
-  }, [isReady, isLoading, loadMoreMovies]);
+  }, [dispatch, isLoading, page, totalPages]);
+
+  // Scroll to Top 기능
+  const scrollToTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
+
+  useEffect(() => {
+    const handleScroll = () => setShowScrollToTop(window.scrollY > 100);
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   return (
     <div>
       <div className="movie-grid">
-        {visibleMovies.map((movie) => (
+        {movies.map((movie) => (
           <MovieCard key={movie.id} movie={movie} aspectRatio="4 / 5" />
         ))}
       </div>
-
-      {isLoading && (
-        <LoadingSpinner />
-      )}
-
+      
+      {isLoading && <LoadingSpinner />}
+      
       {/* 로딩 트리거를 위한 숨겨진 div */}
-      <div id="load-more-trigger" style={{ height: '1px' }} />
-
-      {/* "맨 위로" 버튼 */}
+      <div ref={loadMoreTriggerRef} style={{ height: '20px', margin: '20px 0' }} />
+      
       {showScrollToTop && (
-        <button
-          className="scroll-to-top"
-          onClick={scrollToTop}
-        >
+        <button className="scroll-to-top" onClick={scrollToTop}>
           <ChevronUp />
         </button>
       )}
