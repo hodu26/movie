@@ -6,6 +6,8 @@ import { fetchData } from 'utils/dataLoad';
 export const fetchGenres = createAsyncThunk(
   'genres/fetchGenres',
   async (_, { rejectWithValue }) => {
+    if (Number(localStorage.getItem('retryApi')) > 3) return null;
+
     try {
       const savedGenres = localStorage.getItem('genres');
       const savedTime = localStorage.getItem('genresTimestamp');

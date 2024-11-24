@@ -42,6 +42,7 @@ function LoginRegister() {
       localStorage.setItem('email', email);
       localStorage.setItem('rememberMe', rememberMe);
       localStorage.setItem('TMDb-Key', password);
+      localStorage.setItem('retryApi', 0);
 
       toast.success(`안녕하세요, ${email}님!`);
 
@@ -91,6 +92,7 @@ function LoginRegister() {
     
     localStorage.setItem('email', '');
     localStorage.setItem('rememberMe', false);
+    localStorage.setItem('retryApi', 0);
 
     setEmail('');
     setPassword('');
