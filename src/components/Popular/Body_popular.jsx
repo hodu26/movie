@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import useAuthCheck from 'hooks/useAuthCheck';
-import { fetchPopularMovies } from '../../redux/slices/movieSlice';
-import MovieTable from 'components/Popular/Table_view';
-import MovieGrid from 'components/Popular/Grid_view';
+import { fetchMovies } from '../../redux/slices/movieSlice';
+import MovieTable from 'components/Table_view';
+import MovieGrid from 'components/Grid_view';
 import LoadingSpinner from 'components/Loading';
 import 'styles/Popular/body_popular.css';
 
@@ -16,7 +16,7 @@ const Popular = () => {
   // 초기 데이터 로드
   useEffect(() => {
     if (isLogin && !isLoading && movies.length === 0) {
-      dispatch(fetchPopularMovies(1));
+      dispatch(fetchMovies({ tag: 'popular', page: 1 }));
     }
   }, [dispatch, isLogin, isLoading, movies.length]);
 
@@ -79,7 +79,7 @@ const Popular = () => {
       {/* 영화 Grid <-> Table 섹션 */}
       <div className='view-container'>
       {isTable ? (
-        <MovieTable movies={movies} />
+        <MovieTable tag='popular'/>
       ) : (
         <MovieGrid />
       )}
