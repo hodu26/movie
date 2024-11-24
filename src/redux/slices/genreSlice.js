@@ -1,11 +1,9 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { GET_GENRE_TABLE_URL } from 'api/index';
 import { fetchData } from 'utils/dataLoad';
 import { toast } from 'react-toastify';
 
-const API_URL = 'https://api.themoviedb.org/3';
-const savedTMDbKey = localStorage.getItem('TMDb-Key');
-
-// Async thunk for fetching genres
+// 장르 테이블 로드
 export const fetchGenres = createAsyncThunk(
   'genres/fetchGenres',
   async (_, { rejectWithValue }) => {
@@ -16,12 +14,11 @@ export const fetchGenres = createAsyncThunk(
       const dataIsExpired = savedTime && currentTime - savedTime > 3600000; // 1 hour
         
       if (savedGenres && !dataIsExpired) {
-        return JSON.parse(savedGenres); // Return cached genres
+        return JSON.parse(savedGenres);
       }
 
-      // Fetch new genres if not cached or expired
-      const url = `${API_URL}/genre/movie/list?api_key=${savedTMDbKey}&language=ko`;
-      const data = await fetchData(url, '장르');
+      // 로컬 스토리지에 장르 테이블이 없거나 만료되었을 시 재발급
+      const data = await fetchData(GET_GENRE_TABLE_URL, '장르');
 
       if (data && data.genres) {
         localStorage.setItem('genres', JSON.stringify(data.genres));

@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { fetchData } from 'utils/dataLoad';
-import { API_URL, savedTMDbKey } from 'api/index';
+import { GET_MOVIES_BY_GENRE_URL, GET_MOVIES_BY_TAG_URL } from 'api/index';
 import MovieCard from 'components/Card';
 import 'styles/Home/card_slide.css';
 
@@ -19,15 +19,14 @@ const MovieCategory = ({ title, tag, genres }) => {
         const fetchMovies = async () => {
 
             if (tag === "popular" || tag === "now_playing") {
-                setUrl(`${API_URL}/movie/${tag}?api_key=${savedTMDbKey}&language=ko-KR`); 
+                setUrl(GET_MOVIES_BY_TAG_URL({ tag: tag, page: 1 })); 
             }
             else {
                 // 장르의 id 찾기
-                console.log(genres);
                 const findGenre = genres.find(genre => genre.name === tag); 
                 const findGenreId = findGenre ? Number(findGenre.id) : null;
 
-                setUrl(`${API_URL}/discover/movie?api_key=${savedTMDbKey}&include_adult=true&with_genres=${findGenreId}&language=ko-KR&sort_by=popularity.desc`);
+                setUrl(GET_MOVIES_BY_GENRE_URL({ genre: findGenreId, page: 1 }));
             }
 
             const data = await fetchData(url, tag);
