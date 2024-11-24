@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { ChevronDown, ChevronUp, Search } from 'lucide-react';
 
-const MovieSearchFilter = () => {
+const MoviewishlistFilter = () => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedGenres, setSelectedGenres] = useState([]);
@@ -137,4 +137,4 @@ const MovieSearchFilter = () => {
   );
 };
 
-export default MovieSearchFilter;
+export default MoviewishlistFilter;

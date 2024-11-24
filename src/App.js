@@ -8,6 +8,7 @@ import Home from 'pages/Home';
 import SignInUp from 'pages/SignInUp';
 import Popular from 'pages/Popular';
 import WishList from 'pages/WishList';
+import Search from 'pages/Search';
 import NotFound from 'pages/404NotFound';
 
 function App() {
@@ -48,6 +49,7 @@ function PageTransitions() {
           <Route path="/" element={<Home />} />
           <Route path="/signin" element={<SignInUp />} />
           <Route path="/popular" element={<Popular />} />
+          <Route path="/search" element={<Search />} />
           <Route path="/wishlist" element={<WishList />} />
 
           {/* 404 페이지 */}
