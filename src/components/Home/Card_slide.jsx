@@ -1,11 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { fetchData } from 'utils/dataLoad';
-import { GET_MOVIES_BY_GENRE_URL, GET_MOVIES_BY_TAG_URL } from 'api/index';
+import { GET_MOVIES_BY_GENRE_URL, GET_TRENDING_MOVIES_URL, GET_MOVIES_BY_TAG_URL } from 'api/index';
 import MovieCard from 'components/Card';
 import 'styles/Home/card_slide.css';
 
-const MovieCategory = ({ title, tag, genres }) => {
+const MovieCategory = ({ title, tag, period, genres }) => {
     const containerRef = useRef(null);
     const [isTouching, setIsTouching] = useState(false);
     const [startX, setStartX] = useState(0);
@@ -18,7 +18,10 @@ const MovieCategory = ({ title, tag, genres }) => {
             
         const fetchMovies = async () => {
 
-            if (tag === "popular" || tag === "now_playing") {
+            if (tag === "trending") {
+                setUrl(GET_TRENDING_MOVIES_URL({ period: period, page: 1 })); 
+            }
+            else if (tag === "now_playing") {
                 setUrl(GET_MOVIES_BY_TAG_URL({ tag: tag, page: 1 })); 
             }
             else {
@@ -36,7 +39,7 @@ const MovieCategory = ({ title, tag, genres }) => {
 
         fetchMovies();
 
-    }, [movies, url, tag, genres])
+    }, [movies, url, tag, genres, period])
 
     const isTouchDevice = () => 'ontouchstart' in window || navigator.maxTouchPoints > 0;
 
