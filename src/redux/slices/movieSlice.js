@@ -22,8 +22,7 @@ export const fetchMovies = createAsyncThunk(
       }
 
       // 기본 필터 API 호출
-      if (!data) {
-        console.log(1);
+      if (search === '') {
         data = await fetchData(
           GET_MOVIES_BY_FILTER_URL({ adult, genres, vote_averages, page }),
           '필터링'
@@ -79,6 +78,7 @@ const handleSearchAndFilter = async ({ search, adult, genres, release_dates, vot
         total_pages: Math.ceil(filteredMovies.length / 20),
       };
     }
+    return searchData;
   }
   return null;
 };

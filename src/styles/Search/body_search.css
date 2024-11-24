@@ -54,6 +54,65 @@
     background-color: #2b6cb0;
 }
 
+/* 검색 기록 리스트 스타일 */
+.search-history {
+    position: flex;
+    flex-grow: 0;
+    width: 100%;
+    max-height: 20rem;
+    overflow-y: auto;
+    background-color: #2d3748ab;
+    border: 1px solid #2d3748d8;
+    border-radius: 5px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    z-index: 999;
+    padding: 5px 0;
+}
+
+/* 검색 기록 항목 스타일 */
+.history-item {
+    padding: 10px;
+    font-size: 14px;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+/* 항목에 마우스 올렸을 때 효과 */
+.history-item:hover {
+    background-color: #f1f1f1;
+}
+
+/* 검색 기록이 비어있을 때 메시지 스타일 */
+.search-history::empty {
+    text-align: center;
+    color: #aaa;
+}
+
+/* 성인 콘텐츠 토글과 초기화 버튼을 같은 행에 배치 */
+.toggle-and-reset-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+}
+
+/* 전체 초기화 버튼 */
+.reset-button {
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.reset-button:hover {
+    background-color: #c0392b;
+}
+
 /* 토글 스위치 컨테이너 */
 .toggle-switch {
     display: flex;
