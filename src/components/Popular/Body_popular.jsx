@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import useAuthCheck from 'hooks/useAuthCheck';
-import { fetchPopularMovies } from '../../redux/movieSlice';
+import { fetchPopularMovies } from '../../redux/slices/movieSlice';
 import MovieTable from 'components/Popular/Table_view';
 import MovieGrid from 'components/Popular/Grid_view';
 import LoadingSpinner from 'components/Loading';

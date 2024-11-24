@@ -2,24 +2,28 @@ import React, { useEffect, useState } from 'react';
 import { ChevronDown, ChevronUp, ThumbsUp, Star, ChevronLeft, ChevronRight } from 'lucide-react';
 import { TbRating18Plus } from "react-icons/tb";
 import { useSelector, useDispatch } from 'react-redux';
-import { fetchPopularMovies } from '../../redux/movieSlice';
-import { useGenres } from 'hooks/genreLoad';
+import { fetchGenres } from '../../redux/slices/genreSlice';
+import { fetchPopularMovies } from '../../redux/slices/movieSlice';
 import { IMAGE_BASE_URL } from 'api/index';
 import LoadingSpinner from 'components/Loading';
 import 'styles/Popular/table_view.css';
 
 const MovieTableView = () => {
-  // 장르 정보 불러오기
-  const { genres, loading } = useGenres();
-
+  // 장르 정보 및 영화 정보 불러오기
   const dispatch = useDispatch();
+  const { genres, loading } = useSelector((state) => state.genres);
   const { movies, page, isLoading, totalPages } = useSelector((state) => state.movies);
+
   const [currentPage, setCurrentPage] = useState(1);
   const [moviesPerPage, setMoviesPerPage] = useState(24);
   const [sortColumn, setSortColumn] = useState('rank');
   const [sortDirection, setSortDirection] = useState('asc');
 
   const [currentPageInput, setCurrentPageInput] = useState(currentPage);
+
+  useEffect(() => {
+    dispatch(fetchGenres());
+  }, [dispatch]);
 
   // 화면 크기 계산 및 화면에 로드할 영화 개수 지정
   useEffect(() => {

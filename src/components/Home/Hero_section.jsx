@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { fetchData } from 'utils/dataLoad';
-import { API_URL, IMAGE_BASE_URL, savedTMDbKey } from 'api/index';
+import { GET_MOVIES_BY_TAG_URL, IMAGE_BASE_URL } from 'api/index';
 import 'styles/Home/hero_section.css';
 
 const HeroSection = () => {
@@ -14,8 +14,7 @@ const HeroSection = () => {
 
     useEffect(() => {
         const fetchNowPlaying = async () => {
-            const url = `${API_URL}/movie/now_playing?api_key=${savedTMDbKey}&language=ko-KR`;
-            const data = await fetchData(url, "배너");
+            const data = await fetchData(GET_MOVIES_BY_TAG_URL({ tag: 'now_playing', page: 1 }), '배너');
 
             const randomMovie = getRandomMovie(data.results);
 

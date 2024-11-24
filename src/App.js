@@ -4,8 +4,6 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'; // Toast 스타일
 import { TransitionGroup, CSSTransition } from 'react-transition-group'; // Transition 라이브러리
 
-import { GenreProvider } from 'hooks/genreLoad';  // GenreContext를 import
-
 import Home from 'pages/Home';
 import SignInUp from 'pages/SignInUp';
 import Popular from 'pages/Popular';
@@ -13,8 +11,6 @@ import NotFound from 'pages/404NotFound';
 
 function App() {
   return (
-    <GenreProvider>
-
       <Router basename="/movie">
         <PageTransitions />
 
@@ -33,8 +29,6 @@ function App() {
         />
 
       </Router>
-
-    </GenreProvider>
   );
 }
 
