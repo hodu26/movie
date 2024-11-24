@@ -12,12 +12,14 @@ const Home = () => {
     const dispatch = useDispatch();
     const { genres, loading } = useSelector((state) => state.genres);
 
-    useEffect(() => {
-        dispatch(fetchGenres());
-    }, [dispatch]);
-
     // 로그인 확인
     const isLogin = useAuthCheck();
+
+    useEffect(() => {
+        if (isLogin && !loading) {
+            dispatch(fetchGenres());
+        }
+    }, [dispatch, isLogin, loading]);
     if (!isLogin || loading) return <LoadingSpinner />
 
     return (

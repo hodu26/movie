@@ -1,7 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { GET_GENRE_TABLE_URL } from 'api/index';
 import { fetchData } from 'utils/dataLoad';
-import { toast } from 'react-toastify';
 
 // 장르 테이블 로드
 export const fetchGenres = createAsyncThunk(
@@ -58,7 +57,6 @@ const genreSlice = createSlice({
       .addCase(fetchGenres.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
-        toast.error(state.error);
       });
   },
 });
