@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import useAuthCheck from 'hooks/useAuthCheck';
-import { useGenres } from 'hooks/genreLoad';
+import { fetchGenres } from '../../redux/slices/genreSlice';
 import HeroSection from 'components/Home/Hero_section'
 import MovieCategory from 'components/Home/Card_slide'
 import LoadingSpinner from 'components/Loading';
@@ -8,7 +9,12 @@ import 'styles/Home/body_home.css';
 
 const Home = () => {
     // 장르 정보 불러오기
-    const { genres, loading } = useGenres();
+    const dispatch = useDispatch();
+    const { genres, loading } = useSelector((state) => state.genres);
+
+    useEffect(() => {
+        dispatch(fetchGenres());
+    }, [dispatch]);
 
     // 로그인 확인
     const isLogin = useAuthCheck();

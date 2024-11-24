@@ -1,13 +1,14 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { fetchData } from 'utils/dataLoad';
-import { API_URL, savedTMDbKey } from 'api/index';
+import { GET_MOVIES_BY_TAG_URL } from 'api/index';
+import { toast } from 'react-toastify';
 
+// 영화 데이터 로드
 export const fetchPopularMovies = createAsyncThunk(
   'movies/fetchPopularMovies',
   async (page, { rejectWithValue }) => {
     try {
-      const url = `${API_URL}/movie/popular?api_key=${savedTMDbKey}&language=ko-KR&page=${page}`;
-      const data = await fetchData(url, '대세 콘텐츠');
+      const data = await fetchData(GET_MOVIES_BY_TAG_URL({ tag: 'popular', page: page }), '대세 콘텐츠');
       return {
         movies: data.results,
         totalPages: data.total_pages,
@@ -60,6 +61,7 @@ const movieSlice = createSlice({
       .addCase(fetchPopularMovies.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
+        toast.error(state.error);
       });
   },
 });
