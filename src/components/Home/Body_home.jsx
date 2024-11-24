@@ -26,7 +26,8 @@ const Home = () => {
         <div className="home-container">
             <HeroSection />
 
-            <MovieCategory title="인기 영화" tag="popular" genres={genres} />
+            <MovieCategory title="일간 인기 영화" tag="trending" period="day" genres={genres} />
+            <MovieCategory title="주간 인기 영화" tag="trending" period="week" genres={genres} />
             <MovieCategory title="최신 영화" tag="now_playing" genres={genres} />
             <MovieCategory title="액션 영화" tag="액션" genres={genres} />
             <MovieCategory title="코미디 영화" tag="코미디" genres={genres} />
