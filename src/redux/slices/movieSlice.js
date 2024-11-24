@@ -5,47 +5,51 @@ import { GET_MOVIES_BY_TAG_URL, GET_MOVIES_BY_SEARCH_URL, GET_MOVIES_BY_FILTER_U
 // 영화 데이터 로드 (tag를 통해 구분)
 export const fetchMovies = createAsyncThunk(
   'movies/fetchMovies',
-  async ({ tag, adult, search, genres, release_dates, vote_averages, page }, { rejectWithValue }) => {
+  async (params, { rejectWithValue }) => {
+    const { tag, adult, search, genres, release_dates, vote_averages, page } = params;
     if (Number(localStorage.getItem('retryApi')) > 3) return null;
 
     try {
       let data;
-      if (tag === 'populars') {
-        // 인기 영화 데이터 로드
-        data = await fetchData(GET_MOVIES_BY_TAG_URL({ tag: tag, page: page }), '대세 콘텐츠');
+
+      // 인기 영화 데이터 로드
+      if (tag === 'popular') {
+        data = await fetchData(GET_MOVIES_BY_TAG_URL({ tag, page }), '대세 콘텐츠');
       } 
-      else { // tag === 'search_filter'
-        // 검색어 & 필터링 영화 데이터 로드
-        const searchData = await fetchData(GET_MOVIES_BY_SEARCH_URL({ adult: adult, search: search, page: page }), '검색');
-        const filterData = await fetchData(
-          GET_MOVIES_BY_FILTER_URL({
-            adult: adult,
-            genres: genres,
-            release_dates: release_dates,
-            vote_averages: vote_averages,
-            page: page,
-          }),
+      // 검색 및 필터 적용
+      else if (tag === 'search_filter') {
+        data = await handleSearchAndFilter({ search, adult, genres, release_dates, vote_averages, page });
+      }
+
+      // 기본 필터 API 호출
+      if (!data) {
+        console.log(1);
+        data = await fetchData(
+          GET_MOVIES_BY_FILTER_URL({ adult, genres, vote_averages, page }),
           '필터링'
         );
 
-        // 만약 검색과 필터 결과가 둘 다 있으면 ID 기준으로 교집합을 찾아서 영화 결합
-        if (searchData.results.length !== 0 && filterData.results.length !== 0) {
-          const filteredMovies = searchData.results.filter((searchMovie) =>
-            filterData.results.some((filterMovie) => filterMovie.id === searchMovie.id)
-          );
+        // 개봉일 필터링
+        const filteredData = data.results.filter((movie) => {
+          const releaseDateMatch = 
+            !release_dates || // release_dates가 없거나 빈 배열일 경우 필터링 건너뛰기
+            release_dates.length === 0 ||
+            ( new Date(movie.release_date) >= new Date(release_dates.start || '0000-01-01') && 
+              new Date(movie.release_date) <= new Date(release_dates.end || '9999-12-31'));
+      
+          return releaseDateMatch;
+        });
 
-          data.results = filteredMovies;
-          data.total_pages = Math.min(searchData.total_pages, filterData.total_pages);
-        }
-        else { // 각각 데이터가 하나만 있는 경우 반환
-          data = filterData.results.length === 0 ? searchData : filterData;
-        }
+        data =  {
+          ...data,
+          results: filteredData,
+        };
       }
 
       return {
         movies: data.results,
         totalPages: data.total_pages,
-        page: page,
+        page,
       };
     } catch (error) {
       return rejectWithValue(error.message);
@@ -53,6 +57,63 @@ export const fetchMovies = createAsyncThunk(
   }
 );
 
+// 검색 및 필터링 처리 함수
+const handleSearchAndFilter = async ({ search, adult, genres, release_dates, vote_averages, page }) => {
+  if (search && search.trim()) {
+    const searchData = await fetchData(
+      GET_MOVIES_BY_SEARCH_URL({ adult, search, page }),
+      '검색'
+    );
+
+    if (searchData.results.length) {
+      const filteredMovies = filterMovies(searchData.results, {
+        adult,
+        genres,
+        release_dates,
+        vote_averages,
+      });
+
+      return {
+        ...searchData,
+        results: filteredMovies,
+        total_pages: Math.ceil(filteredMovies.length / 20),
+      };
+    }
+  }
+  return null;
+};
+
+// 영화 필터링 로직
+const filterMovies = (movies, filters) => {
+  const { adult, genres, release_dates, vote_averages } = filters;
+
+  return movies.filter((movie) => {
+    // 성인 콘텐츠 필터링
+    const adultMatch = adult || !movie.adult;
+
+    // 장르 필터링
+    const genreMatch =
+      !genres || genres.length === 0 || movie.genre_ids.some((id) => genres.includes(id));
+
+    // 개봉일 필터링
+    const releaseDateMatch = 
+      !release_dates || // release_dates가 없거나 빈 배열일 경우 필터링 건너뛰기
+      release_dates.length === 0 ||
+      ( new Date(movie.release_date) >= new Date(release_dates.start || '0000-01-01') && 
+        new Date(movie.release_date) <= new Date(release_dates.end || '9999-12-31'));
+
+    // 평점 필터링
+    const voteMatch = 
+      (!vote_averages.min && !vote_averages.max) || // vote_averages가 없거나 최소값, 최대값이 설정되지 않으면 필터링을 건너뛰기
+      (movie.vote_average >= vote_averages.min && movie.vote_average <= vote_averages.max);
+
+    return adultMatch && genreMatch && releaseDateMatch && voteMatch;
+  });
+};
+
+
+
+// Slice 정의
 const movieSlice = createSlice({
   name: 'movies',
   initialState: {
@@ -76,22 +137,23 @@ const movieSlice = createSlice({
         state.error = null;
       })
       .addCase(fetchMovies.fulfilled, (state, action) => {
-        if (action.payload.page === 1) {
-          const moviesWithRank = action.payload.movies.map((movie, index) => ({
+        const { movies, totalPages, page } = action.payload;
+
+        // 페이지에 따라 데이터 병합
+        if (page === 1) {
+          state.movies = movies.map((movie, index) => ({
             ...movie,
             rank: index + 1,
           }));
-          state.movies = moviesWithRank;
-        } 
-        else {
-          const moviesWithRank = [...state.movies, ...action.payload.movies].map((movie, index) => ({
+        } else {
+          state.movies = [...state.movies, ...movies].map((movie, index) => ({
             ...movie,
             rank: index + 1,
           }));
-          state.movies = moviesWithRank;
         }
-        state.page = action.payload.page;
-        state.totalPages = action.payload.totalPages;
+
+        state.page = page;
+        state.totalPages = totalPages;
         state.isLoading = false;
       })
       .addCase(fetchMovies.rejected, (state, action) => {
