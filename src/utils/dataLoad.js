@@ -19,7 +19,7 @@ export const fetchData = async (url, tag) => {
         console.log(url)
         const response = await axios.get(url, {
             headers: {
-                Authorization: `Bearer ${process.env.REACT_APP_TMDB_ACCESS_TOKEN}`,
+                // Authorization: `Bearer ${process.env.REACT_APP_TMDB_ACCESS_TOKEN}`,
                 Accept: 'application/json',
             },
         });
