@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { fetchData } from 'utils/dataLoad';
 import { API_URL, savedTMDbKey } from 'api/index';
+import { toast } from 'react-toastify';
 
 export const fetchPopularMovies = createAsyncThunk(
   'movies/fetchPopularMovies',
@@ -60,6 +61,7 @@ const movieSlice = createSlice({
       .addCase(fetchPopularMovies.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
+        toast.error(state.error);
       });
   },
 });

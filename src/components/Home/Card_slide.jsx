@@ -23,6 +23,7 @@ const MovieCategory = ({ title, tag, genres }) => {
             }
             else {
                 // 장르의 id 찾기
+                console.log(genres);
                 const findGenre = genres.find(genre => genre.name === tag); 
                 const findGenreId = findGenre ? Number(findGenre.id) : null;
 
