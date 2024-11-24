@@ -97,135 +97,137 @@ const MovieSearchFilter = () => {
 
   return (
     <div className="movie-search-container">
-      {/* 검색바 */}
-      <div className="search-bar">
-        <div className="search-input-container">
-          <input
-            type="text"
-            placeholder="영화 검색..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            onFocus={() => setShowHistory(true)} // 검색창 포커스 시 검색 기록 보이기
-            onBlur={handleBlur} // 포커스 아웃 시 로컬스토리지에 검색기록 추가
-            className="search-input"
-          />
-          <Search className="search-icon" />
-        </div>
-        <button
-          onClick={() => setIsExpanded(!isExpanded)}
-          className="filter-button"
-        >
-          {isExpanded ? (
-            <ChevronUp className="h-5 w-5" />
-          ) : (
-            <ChevronDown className="h-5 w-5" />
-          )}
-          필터
-        </button>
-      </div>
-
-      {/* 검색 기록 */}
-      {showHistory && searchHistory.length > 0 && (
-        <div className="search-history">
-          <ul>
-            {searchHistory.map((historyItem, index) => (
-              <li key={index} onClick={() => handleHistoryClick(historyItem)} className="history-item">
-                {historyItem}
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
-
-      <div className="toggle-and-reset-container">
-        {/* 전체 초기화 버튼 */}
-        <button onClick={handleResetFilters} className="reset-button">
-          전체 초기화
-        </button>
-
-        {/* 성인 콘텐츠 토글 - 간단한 버전 */}
-        <div className="toggle-switch">
-          <span className="toggle-switch__label">성인 콘텐츠 포함</span>
-          <button
-            onClick={() => setIncludeAdult(!includeAdult)}
-            className={`toggle-switch__button ${includeAdult
-                ? 'toggle-switch__button--active'
-                : 'toggle-switch__button--inactive'
-              }`}
-          >
-            <div
-              className={`toggle-switch__handle ${includeAdult
-                  ? 'toggle-switch__handle--active'
-                  : 'toggle-switch__handle--inactive'
-                }`}
+      <div className='movie-search-sub-container'>
+        {/* 검색바 */}
+        <div className="search-bar">
+          <div className="search-input-container">
+            <input
+              type="text"
+              placeholder="영화 검색..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              onFocus={() => setShowHistory(true)} // 검색창 포커스 시 검색 기록 보이기
+              onBlur={handleBlur} // 포커스 아웃 시 로컬스토리지에 검색기록 추가
+              className="search-input"
             />
+            <Search className="search-icon" />
+          </div>
+          <button
+            onClick={() => setIsExpanded(!isExpanded)}
+            className="filter-button"
+          >
+            {isExpanded ? (
+              <ChevronUp className="h-5 w-5" />
+            ) : (
+              <ChevronDown className="h-5 w-5" />
+            )}
+            필터
           </button>
         </div>
-      </div>
 
-      {/* 확장된 필터 옵션 */}
-      {isExpanded && (
-        <div className="filter-options">
-
-          {/* 장르 선택 */}
-          <div>
-            <h3 className="text-white mb-2">장르</h3>
-            <div className="genre-filter">
-              {genres.map((genre) => (
-                <button
-                  key={genre.id}
-                  onClick={() => handleGenreToggle(genre.id)}
-                  className={`genre-button ${selectedGenres.includes(genre.id) ? 'selected' : ''
-                    }`}
-                >
-                  {genre.name}
-                </button>
+        {/* 검색 기록 */}
+        {showHistory && searchHistory.length > 0 && (
+          <div className="search-history">
+            <ul>
+              {searchHistory.map((historyItem, index) => (
+                <li key={index} onClick={() => handleHistoryClick(historyItem)} className="history-item">
+                  {historyItem}
+                </li>
               ))}
-            </div>
+            </ul>
           </div>
+        )}
 
-          {/* 개봉일 범위 */}
-          <div>
-            <h3 className="text-white mb-2">개봉일</h3>
-            <div className="date-range-filter">
-              <input
-                type="date"
-                value={dateRange.start}
-                onChange={(e) =>
-                  setDateRange((prev) => ({ ...prev, start: e.target.value }))
-                }
-                className="date-input"
+        <div className="toggle-and-reset-container">
+          {/* 전체 초기화 버튼 */}
+          <button onClick={handleResetFilters} className="reset-button">
+            전체 초기화
+          </button>
+
+          {/* 성인 콘텐츠 토글 - 간단한 버전 */}
+          <div className="toggle-switch">
+            <span className="toggle-switch__label">성인 콘텐츠 포함</span>
+            <button
+              onClick={() => setIncludeAdult(!includeAdult)}
+              className={`toggle-switch__button ${includeAdult
+                  ? 'toggle-switch__button--active'
+                  : 'toggle-switch__button--inactive'
+                }`}
+            >
+              <div
+                className={`toggle-switch__handle ${includeAdult
+                    ? 'toggle-switch__handle--active'
+                    : 'toggle-switch__handle--inactive'
+                  }`}
               />
-              <span className="text-white self-center">~</span>
-              <input
-                type="date"
-                value={dateRange.end}
-                onChange={(e) =>
-                  setDateRange((prev) => ({ ...prev, end: e.target.value }))
-                }
-                className="date-input"
-              />
-            </div>
+            </button>
           </div>
+        </div>
 
-          {/* 평점 범위 */}
-          <div>
-            <h3 className="rating-range__header">평점 범위</h3>
-            <div className="rating-range">
-              <DualRangeSlider
-                min={0}
-                max={10}
-                onChange={setRatingRange}
-                className="rating-range__slider"
-              />
-              <div className="rating-range__values">
-                <span>{ratingRange.min.toFixed(1)}</span>
-                <span>{ratingRange.max.toFixed(1)}</span>
+        {/* 확장된 필터 옵션 */}
+        {isExpanded && (
+          <div className="filter-options">
+
+            {/* 장르 선택 */}
+            <div>
+              <h3 className="filter-category">장르</h3>
+              <div className="genre-filter">
+                {genres.map((genre) => (
+                  <button
+                    key={genre.id}
+                    onClick={() => handleGenreToggle(genre.id)}
+                    className={`genre-button ${selectedGenres.includes(genre.id) ? 'selected' : ''
+                      }`}
+                  >
+                    {genre.name}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* 개봉일 범위 */}
+            <div>
+              <h3 className="filter-category">개봉일</h3>
+              <div className="date-range-filter">
+                <input
+                  type="date"
+                  value={dateRange.start}
+                  onChange={(e) =>
+                    setDateRange((prev) => ({ ...prev, start: e.target.value }))
+                  }
+                  className="date-input"
+                />
+                <span className="text-white self-center">~</span>
+                <input
+                  type="date"
+                  value={dateRange.end}
+                  onChange={(e) =>
+                    setDateRange((prev) => ({ ...prev, end: e.target.value }))
+                  }
+                  className="date-input"
+                />
+              </div>
+            </div>
+
+            {/* 평점 범위 */}
+            <div className='rating-container'>
+              <h3 className="rating-range__header">평점 범위</h3>
+              <div className="rating-range">
+                <DualRangeSlider
+                  min={0}
+                  max={10}
+                  onChange={setRatingRange}
+                  className="rating-range__slider"
+                />
+                <div className="rating-range__values">
+                  <span>{ratingRange.min.toFixed(1)}</span>
+                  <span>{ratingRange.max.toFixed(1)}</span>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      )}
+        )}
+      </div>
 
       {/* 테이블 컨테이너 */}
       <div className="view-container">
