@@ -1,10 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { ChevronUp } from 'lucide-react';
 import { useSelector, useDispatch } from 'react-redux';
-import { fetchPopularMovies } from '../../redux/slices/movieSlice';
+import { fetchMovies } from '../redux/slices/movieSlice';
 import MovieCard from 'components/Card';
 import LoadingSpinner from 'components/Loading';
-import 'styles/Popular/grid_view.css';
+import 'styles/grid_view.css';
 
 const GridView = () => {
   // 영화 정보 불러오기
@@ -27,7 +27,7 @@ const GridView = () => {
     observerRef.current = new IntersectionObserver((entries) => {
       const [entry] = entries;
       if (entry.isIntersecting && !isLoading && page < totalPages) {
-        dispatch(fetchPopularMovies(page + 1));
+        dispatch(fetchMovies({ tag: 'popular', page: page+1 }));
       }
     }, options);
 
