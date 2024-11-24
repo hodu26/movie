@@ -2,13 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { ChevronDown, ChevronUp, ThumbsUp, Star, ChevronLeft, ChevronRight } from 'lucide-react';
 import { TbRating18Plus } from "react-icons/tb";
 import { useSelector, useDispatch } from 'react-redux';
-import { fetchGenres } from '../../redux/slices/genreSlice';
-import { fetchPopularMovies } from '../../redux/slices/movieSlice';
+import { fetchGenres } from '../redux/slices/genreSlice';
+import { fetchMovies } from '../redux/slices/movieSlice';
 import { IMAGE_BASE_URL } from 'api/index';
 import LoadingSpinner from 'components/Loading';
-import 'styles/Popular/table_view.css';
+import 'styles/table_view.css';
 
-const MovieTableView = () => {
+const MovieTableView = ({ tag, adult, search, selected_genres, release_dates, vote_averages }) => {
   // 장르 정보 및 영화 정보 불러오기
   const dispatch = useDispatch();
   const { genres, loading } = useSelector((state) => state.genres);
@@ -24,6 +24,11 @@ const MovieTableView = () => {
   useEffect(() => {
     dispatch(fetchGenres());
   }, [dispatch]);
+
+  // 재로딩 될때 현재 페이지 첫 페이지로 초기화
+  useEffect(() =>{
+    setCurrentPage(1);
+  }, [tag, adult, search, selected_genres, release_dates, vote_averages]);
 
   // 화면 크기 계산 및 화면에 로드할 영화 개수 지정
   useEffect(() => {
@@ -67,7 +72,12 @@ const MovieTableView = () => {
     setCurrentPage((prev) => Math.min(prev + 1, endPages));
 
     if (!isLoading && currentPage+1 === endPages && page < totalPages) {
-      dispatch(fetchPopularMovies(page + 1));
+      if (tag === 'popular') {
+        dispatch(fetchMovies({ tag: tag, page: page+1 }));
+      }
+      else { // tag === 'search_filter'
+        dispatch(fetchMovies({ tag: tag, adult: adult, search: search, genres: selected_genres, release_dates: release_dates, vote_averages: vote_averages, page: page+1 }));
+      }
     }
   };
 
