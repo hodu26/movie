@@ -6,6 +6,8 @@ import { GET_MOVIES_BY_TAG_URL } from 'api/index';
 export const fetchPopularMovies = createAsyncThunk(
   'movies/fetchPopularMovies',
   async (page, { rejectWithValue }) => {
+    if (Number(localStorage.getItem('retryApi')) > 3) return null;
+    
     try {
       const data = await fetchData(GET_MOVIES_BY_TAG_URL({ tag: 'popular', page: page }), '대세 콘텐츠');
       return {
