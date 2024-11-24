@@ -90,9 +90,11 @@ function LoginRegister() {
       return;
     }
 
+    // 유저별 정보 (위시리스트, 검색기록 ...)
     const savedUsersData = JSON.parse(localStorage.getItem('users_data')) || {};
     const newUserData = {
       wishlist: [],
+      search_history: [],
     };
 
     savedUsers[email] = password;

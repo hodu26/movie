@@ -7,6 +7,8 @@ const DualRangeSlider = ({ min, max, onChange, className }) => {
   const minValRef = useRef(min);
   const maxValRef = useRef(max);
   const range = useRef(null);
+  const leftSlider = useRef(null);
+  const rightSlider = useRef(null);
 
   // 퍼센트로 전환
   const getPercent = useCallback(
@@ -14,31 +16,40 @@ const DualRangeSlider = ({ min, max, onChange, className }) => {
     [min, max]
   );
 
-  // 왼쪽 슬라이더 움직일 시
-  useEffect(() => {
+  // 슬라이더 스타일 업데이트
+  const updateSliderStyle = useCallback(() => {
     const minPercent = getPercent(minVal);
-    const maxPercent = getPercent(maxValRef.current);
+    const maxPercent = getPercent(maxVal);
 
     if (range.current) {
       range.current.style.left = `${minPercent}%`;
       range.current.style.width = `${maxPercent - minPercent}%`;
     }
-  }, [minVal, getPercent]);
 
-  // 오른쪽 슬라이더 움직일 시
-  useEffect(() => {
-    const minPercent = getPercent(minValRef.current);
-    const maxPercent = getPercent(maxVal);
-
-    if (range.current) {
-      range.current.style.width = `${maxPercent - minPercent}%`;
+    if (leftSlider.current) {
+      leftSlider.current.style.left = `${minPercent}%`;
     }
-  }, [maxVal, getPercent]);
+
+    if (rightSlider.current) {
+      rightSlider.current.style.left = `${maxPercent}%`;
+    }
+  }, [getPercent, minVal, maxVal]);
+
+  // 슬라이더 스타일 업데이트
+  useEffect(() => {
+    updateSliderStyle();
+  }, [minVal, maxVal, updateSliderStyle]);
 
   // search의 rate 범위 설정
   useEffect(() => {
     onChange({ min: minVal, max: maxVal });
   }, [minVal, maxVal, onChange]);
+
+  // min, max 값 변경 시 동기화
+  useEffect(() => {
+    setMinVal(min);
+    setMaxVal(max);
+  }, [min, max]);
 
   return (
     <div className={`dual-range-slider ${className}`}>

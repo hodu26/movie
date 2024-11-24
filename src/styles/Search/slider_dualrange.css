@@ -1,6 +1,6 @@
 .dual-range-slider {
     position: relative;
-    height: 1.5rem;
+    height: 0.75rem;
 }
 
 /* 슬라이더의 입력 요소 스타일 */
@@ -16,16 +16,16 @@
 .dual-range-slider__thumb::-webkit-slider-thumb {
     pointer-events: auto;
     appearance: none;
-    height: 1rem;
-    width: 1rem;
+    height: 0.5rem;
+    width: 0.5rem;
     border-radius: 50%;
     background: white;
     box-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
 }
 
 .dual-range-slider__thumb::-moz-range-thumb {
-    height: 1rem;
-    width: 1rem;
+    height: 0.5rem;
+    width: 0.5rem;
     border-radius: 50%;
     background: white;
     box-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
@@ -34,7 +34,7 @@
 /* 전체 슬라이더 배경 */
 .dual-range-slider__track {
     position: absolute;
-    height: 0.375rem;
+    height: 0.1875rem;
     background-color: #4b5563;
     width: 100%;
     z-index: 10;
@@ -44,8 +44,33 @@
 /* 선택된 범위를 표시하는 활성 영역 */
 .dual-range-slider__range {
     position: absolute;
-    height: 0.375rem;
+    height: 0.1875rem;
     background-color: #2563eb;
     z-index: 20;
     border-radius: 0.25rem;
+}
+
+/* 반응형 */
+@media (min-width: 768px) {
+    .dual-range-slider {
+        height: 1.5rem;
+    }
+
+    .dual-range-slider__thumb::-webkit-slider-thumb {
+        height: 1rem;
+        width: 1rem;
+    }
+    
+    .dual-range-slider__thumb::-moz-range-thumb {
+        height: 1rem;
+        width: 1rem;
+    }
+    
+    .dual-range-slider__track {
+        height: 0.375rem;
+    }
+    
+    .dual-range-slider__range {
+        height: 0.375rem;
+    }
 }
