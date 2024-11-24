@@ -98,6 +98,10 @@ body {
   color: #fff;
 }
 
+.input-group input:focus {
+  outline: none; /* 기본 outline을 없앰 */
+}
+
 .register-form .input-group {
   margin-bottom: 15px;
 }

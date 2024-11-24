@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import 'styles/SignInUp/body_signin_up.css';
@@ -11,6 +11,11 @@ function LoginRegister() {
   const [rememberMe, setRememberMe] = useState(false);
   const [agreeTerms, setAgreeTerms] = useState(false);
   const navigate = useNavigate();
+
+  // ref로 이메일, 비밀번호, 비밀번호 확인 필드 접근
+  const emailRef = useRef(null);
+  const passwordRef = useRef(null);
+  const confirmPasswordRef = useRef(null);
 
   // 로컬스토리지에서 데이터 로드
   useEffect(() => {
@@ -35,6 +40,7 @@ function LoginRegister() {
 
     if (!validateEmail(email)) {
       toast.error('이메일 형식이 올바르지 않습니다.');
+      emailRef.current.focus();
       return;
     }
 
@@ -53,6 +59,7 @@ function LoginRegister() {
       navigate('/');
     } else {
       toast.error('이메일 또는 비밀번호가 올바르지 않습니다.');
+      passwordRef.current.focus();
     }
   };
 
@@ -62,16 +69,19 @@ function LoginRegister() {
 
     if (!validateEmail(email)) {
       toast.error('이메일 형식이 올바르지 않습니다.');
+      emailRef.current.focus();
       return;
     }
 
     if (savedUsers[email]) {
       toast.error('이미 등록된 이메일입니다.');
+      emailRef.current.focus();
       return;
     }
 
     if (!password || password !== confirmPassword) {
       toast.error('비밀번호가 일치하지 않습니다.');
+      passwordRef.current.focus();
       return;
     }
 
@@ -115,6 +125,16 @@ function LoginRegister() {
     setIsLogin(!isLogin);
   };
 
+  // 로그인/회원가입 폼이 전환되었을 때 포커스 처리
+  useEffect(() => {
+    if (isLogin) {
+      if (!localStorage.getItem('email')) emailRef.current.focus();
+      else passwordRef.current.focus();
+    } else {
+      emailRef.current.focus(); 
+    }
+  }, [isLogin, email]);
+
   return (
     <div className="signin-container">
       <div className="wrapper">
@@ -125,6 +145,7 @@ function LoginRegister() {
               <div className="input-group">
                 <i className="fas fa-envelope"></i>
                 <input
+                  ref={emailRef}
                   type="email"
                   placeholder="아이디 (이메일)"
                   value={email}
@@ -134,6 +155,7 @@ function LoginRegister() {
               <div className="input-group">
                 <i className="fas fa-lock"></i>
                 <input
+                  ref={passwordRef}
                   type="password"
                   placeholder="비밀번호"
                   value={password}
@@ -167,6 +189,7 @@ function LoginRegister() {
               <div className="input-group">
                 <i className="fas fa-user"></i>
                 <input
+                  ref={emailRef}
                   type="email"
                   placeholder="아이디 (이메일)"
                   value={email}
@@ -176,6 +199,7 @@ function LoginRegister() {
               <div className="input-group">
                 <i className="fas fa-lock"></i>
                 <input
+                  ref={passwordRef}
                   type="password"
                   placeholder="비밀번호"
                   value={password}
@@ -185,6 +209,7 @@ function LoginRegister() {
               <div className="input-group">
                 <i className="fas fa-lock"></i>
                 <input
+                  ref={confirmPasswordRef}
                   type="password"
                   placeholder="비밀번호 확인"
                   value={confirmPassword}
