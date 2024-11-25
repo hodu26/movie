@@ -6,7 +6,7 @@ import MovieCard from 'components/Card';
 import LoadingSpinner from 'components/Loading';
 import 'styles/grid_view.css';
 
-const GridView = () => {
+const GridView = ({ tag, adult, search, selected_genres, release_dates, vote_averages }) => {
   // 영화 정보 불러오기
   const dispatch = useDispatch();
   const { movies, page, isLoading, totalPages } = useSelector((state) => state.movies);
@@ -14,6 +14,11 @@ const GridView = () => {
   const [showScrollToTop, setShowScrollToTop] = useState(false);
   const observerRef = useRef(null);
   const loadMoreTriggerRef = useRef(null);
+  
+  // 재로딩 될때 맨 위로 이동 및 초기화
+  useEffect(() =>{
+    scrollToTop();
+  }, [tag, adult, search, selected_genres, release_dates, vote_averages]);
 
   // Intersection Observer 설정
   useEffect(() => {
@@ -27,7 +32,12 @@ const GridView = () => {
     observerRef.current = new IntersectionObserver((entries) => {
       const [entry] = entries;
       if (entry.isIntersecting && !isLoading && page < totalPages) {
-        dispatch(fetchMovies({ tag: 'popular', page: page+1 }));
+        if (tag === 'popular') {
+          dispatch(fetchMovies({ tag: tag, page: page+1 }));
+        }
+        else { // tag === 'search_filter'
+          dispatch(fetchMovies({ tag: tag, adult: adult, search: search, genres: selected_genres, release_dates: release_dates, vote_averages: vote_averages, page: page+1 }));
+        }
       }
     }, options);
 
@@ -40,7 +50,7 @@ const GridView = () => {
         observerRef.current.disconnect();
       }
     };
-  }, [dispatch, isLoading, page, totalPages]);
+  }, [dispatch, isLoading, page, totalPages, tag, adult, search, selected_genres, release_dates, vote_averages]);
 
   // Scroll to Top 기능
   const scrollToTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
