@@ -59,9 +59,14 @@ const MovieSearchFilter = () => {
   // 포커스 아웃 시 검색 기록에 추가 및 로컬스토리지에 저장
   const handleBlur = () => {
     if (searchQuery.trim() !== '') {
-      const newHistory = [searchQuery, ...searchHistory].slice(0, 3); // 최대 3개로 제한
-      setSearchHistory(newHistory);
-      localStorage.setItem('user_data', JSON.stringify({ email: { search_history: newHistory } }));
+      // 중복 여부 확인
+      const isDuplicate = searchHistory.includes(searchQuery);
+    
+      if (!isDuplicate) {
+        const newHistory = [searchQuery, ...searchHistory].slice(0, 3); // 최대 3개로 제한
+        setSearchHistory(newHistory);
+        localStorage.setItem('user_data', JSON.stringify({ email: { search_history: newHistory } }));
+      }
     }
 
     // 일정 시간 후 검색 기록 닫기
