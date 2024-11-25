@@ -5,7 +5,9 @@ import useAuthCheck from 'hooks/useAuthCheck';
 import { fetchGenres } from '../../redux/slices/genreSlice';
 import { fetchMovies } from '../../redux/slices/movieSlice';
 import DualRangeSlider from 'components/Search/Slider_dualRange';
+import ButtonTableGrid from 'components/Button_tablegrid';
 import MovieTable from 'components/Table_view';
+import MovieGrid from 'components/Grid_view';
 import LoadingSpinner from 'components/Loading';
 import 'styles/Search/body_search.css';
 
@@ -14,6 +16,8 @@ const MovieSearchFilter = () => {
   const dispatch = useDispatch();
   const { genres, loading } = useSelector((state) => state.genres);
   const isLogin = useAuthCheck();
+
+  const [isTable, setIsTable] = useState(null);
 
   // 필터
   const [isExpanded, setIsExpanded] = useState(false);
@@ -81,6 +85,16 @@ const MovieSearchFilter = () => {
     setShowHistory(false);
   };
 
+  useEffect(() => {
+    if (!isLogin) return;
+    const savedView = localStorage.getItem('isTable');
+    if (savedView !== null) {
+      setIsTable(JSON.parse(savedView));
+    } else {
+      setIsTable(false);
+    }
+  }, [isLogin]);
+
   if (!isLogin || loading) return <LoadingSpinner />;
 
   const handleGenreToggle = (genreId) => {
@@ -102,7 +116,7 @@ const MovieSearchFilter = () => {
 
   return (
     <div className="movie-search-container">
-      <div className='movie-search-sub-container'>
+      <div className='movie-search-sub-container fixed-filter'>
         {/* 검색바 */}
         <div className="search-bar">
           <div className="search-input-container">
@@ -148,6 +162,9 @@ const MovieSearchFilter = () => {
           <button onClick={handleResetFilters} className="reset-button">
             전체 초기화
           </button>
+
+          {/* 영화 Grid <-> Table 버튼 */}
+          <ButtonTableGrid isTable={isTable} setIsTable={setIsTable} />
 
           {/* 성인 콘텐츠 토글 - 간단한 버전 */}
           <div className="toggle-switch">
@@ -236,6 +253,7 @@ const MovieSearchFilter = () => {
 
       {/* 테이블 컨테이너 */}
       <div className="view-container">
+      {isTable ? (
         <MovieTable
           tag="search_filter"
           adult={includeAdult}
@@ -244,6 +262,16 @@ const MovieSearchFilter = () => {
           release_dates={dateRange}
           vote_averages={ratingRange}
         />
+      ) : (
+        <MovieGrid 
+          tag="search_filter"
+          adult={includeAdult}
+          search={searchQuery}
+          selected_genres={selectedGenres}
+          release_dates={dateRange}
+          vote_averages={ratingRange}
+        />
+      )}
       </div>
     </div>
   );
