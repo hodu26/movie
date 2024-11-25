@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Star, ThumbsUp } from 'lucide-react';
 import { TbRating18Plus } from "react-icons/tb";
 import { IMAGE_BASE_URL } from 'api/index';
@@ -6,8 +6,44 @@ import 'styles/card.css';
 
 const MovieCard = ({ movie, aspectRatio }) => {
     const [isFavorite, setIsFavorite] = useState(false);
+    const [userEmail, setUserEmail] = useState(null);
+    const [storedData, setStoredData] = useState({});
+
+    // 로컬 스토리지에서 초기 상태 로드
+    useEffect(() => {
+        setUserEmail(localStorage.getItem('email'));
+        setStoredData(JSON.parse(localStorage.getItem('users_data')));
+
+        const userWishlist = storedData[userEmail]?.wishlist || [];
+        const isMovieInWishlist = userWishlist.some((wishlistMovie) => wishlistMovie.id === movie.id);
+        setIsFavorite(isMovieInWishlist);
+    }, [userEmail, storedData, movie.id]);
+
+    // 로컬 스토리지에 데이터 저장
+    const updateLocalStorage = (updatedWishlist) => {
+        const updatedUserData = {
+            ...storedData,
+            [userEmail]: {
+                ...storedData[userEmail],
+                wishlist: updatedWishlist,
+            },
+        };
+        localStorage.setItem('users_data', JSON.stringify(updatedUserData));
+    };
 
     const toggleFavorite = () => {
+        const userWishlist = storedData[userEmail]?.wishlist || [];
+
+        let updatedWishlist;
+        if (isFavorite) {
+            // Remove movie from wishlist
+            updatedWishlist = userWishlist.filter((wishlistMovie) => wishlistMovie.id !== movie.id);
+        } else {
+            // Add movie to wishlist
+            updatedWishlist = [...userWishlist, movie];
+        }
+
+        updateLocalStorage(updatedWishlist);
         setIsFavorite(!isFavorite);
     };
 
