@@ -6,49 +6,6 @@
   overflow: hidden;
 }
 
-/* Grid/Table 전환 버튼 */
-.view-toggle {
-  display: flex;
-  justify-content: center;
-  align-items: center; 
-  gap: 1rem;
-}
-
-.view-toggle .button {
-  width: 2.5rem;
-  height: 2.5rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 0.375rem;
-  transition: background-color 0.3s;
-}
-
-/* 현재 선택된 버튼 */
-.view-toggle .button-selected {
-  background-color: #3b82f6;
-}
-
-.view-toggle .button-selected:hover {
-  background-color: #2563eb;
-}
-
-/* 현재 선택되지 않은 버튼 */
-.view-toggle .button-unselected {
-  background-color: #4b5563;
-}
-
-.view-toggle .button-unselected:hover {
-  background-color: #374151;
-}
-
-/* 아이콘 스타일 */
-.view-toggle .icon {
-  width: 1.5rem;
-  height: 1.5rem;
-  color: white;
-}
-
 /* Grid/Table 영역 */
 .view-container {
   flex: 1;
