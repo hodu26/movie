@@ -53,7 +53,7 @@ const Popular = () => {
       {isTable ? (
         <MovieTable tag='popular'/>
       ) : (
-        <MovieGrid />
+        <MovieGrid tag='popular'/>
       )}
       </div>
     </div>
