@@ -33,6 +33,23 @@ const MovieSearchFilter = () => {
   const [searchHistory, setSearchHistory] = useState([]);
   const [showHistory, setShowHistory] = useState(false);
 
+  useEffect(() => {
+    // 로컬 스토리지에서 이메일과 사용자 데이터 로드
+    const email = localStorage.getItem('email');
+    const usersData = JSON.parse(localStorage.getItem('users_data')) || {};
+  
+    setUserEmail(email);
+    setStoredData(usersData);
+  
+    // 이메일이 유효하고 사용자 데이터가 존재하는 경우에만 검색 기록 로드
+    if (email && usersData[email]) {
+      const savedHistory = usersData[email].search_history || [];
+      setSearchHistory(savedHistory);
+    } else {
+      setSearchHistory([]);
+    }
+  }, []);
+  
   // 데이터 로드
   useEffect(() => {
     // 장르 테이블 로드
@@ -55,15 +72,6 @@ const MovieSearchFilter = () => {
       );
     }
   }, [dispatch, isLogin, loading, searchQuery, includeAdult, selectedGenres, dateRange, ratingRange]);
-
-  // 로컬스토리지에서 검색 기록 불러오기
-  useEffect(() => {
-    setUserEmail(localStorage.getItem('email'));
-    setStoredData(JSON.parse(localStorage.getItem('users_data')));
-
-    const savedHistory = storedData[userEmail]?.search_history || [];
-    setSearchHistory(savedHistory);
-  }, [userEmail, storedData]);
 
   // 포커스 아웃 시 검색 기록에 추가 및 로컬스토리지에 저장
   const handleBlur = () => {
