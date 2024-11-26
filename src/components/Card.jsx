@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Star, ThumbsUp } from 'lucide-react';
 import { TbRating18Plus } from "react-icons/tb";
 import { IMAGE_BASE_URL } from 'api/index';
@@ -13,11 +13,25 @@ const MovieCard = ({ movie, onChangeWishList, aspectRatio }) => {
     useEffect(() => {
         setUserEmail(localStorage.getItem('email'));
         setStoredData(JSON.parse(localStorage.getItem('users_data')));
-
-        const userWishlist = storedData[userEmail]?.wishlist || [];
+    }, []); // 초기 1회 실행
+    
+    const userWishlist = useMemo(() => {
+        return storedData[userEmail]?.wishlist || [];
+    }, [storedData, userEmail]);
+    
+    useEffect(() => {
         const isMovieInWishlist = userWishlist.some((wishlistMovie) => wishlistMovie.id === movie.id);
         setIsFavorite(isMovieInWishlist);
-    }, [userEmail, storedData, movie.id]);
+    }, [userWishlist, movie.id]);
+
+    // useEffect(() => {
+    //     setUserEmail(localStorage.getItem('email'));
+    //     setStoredData(JSON.parse(localStorage.getItem('users_data')));
+
+    //     const userWishlist = storedData[userEmail]?.wishlist || [];
+    //     const isMovieInWishlist = userWishlist.some((wishlistMovie) => wishlistMovie.id === movie.id);
+    //     setIsFavorite(isMovieInWishlist);
+    // }, [userEmail, storedData, movie.id]);
 
     // 로컬 스토리지에 데이터 저장
     const updateLocalStorage = (updatedWishlist) => {

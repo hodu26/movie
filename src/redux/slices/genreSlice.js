@@ -19,7 +19,7 @@ export const fetchGenres = createAsyncThunk(
       }
 
       // 로컬 스토리지에 장르 테이블이 없거나 만료되었을 시 재발급
-      const data = await fetchData(GET_GENRE_TABLE_URL, '장르');
+      const data = await fetchData(GET_GENRE_TABLE_URL(), '장르');
 
       if (data && data.genres) {
         localStorage.setItem('genres', JSON.stringify(data.genres));
