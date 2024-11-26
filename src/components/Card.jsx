@@ -4,20 +4,14 @@ import { TbRating18Plus } from "react-icons/tb";
 import { IMAGE_BASE_URL } from 'api/index';
 import 'styles/card.css';
 
-const MovieCard = ({ movie, onChangeWishList, aspectRatio }) => {
+const MovieCard = ({ tag, movie, onChangeWishList, aspectRatio }) => {
     const [isFavorite, setIsFavorite] = useState(false);
-    const [userEmail, setUserEmail] = useState(null);
-    const [storedData, setStoredData] = useState({});
-
-    // 로컬 스토리지에서 초기 상태 로드
-    useEffect(() => {
-        setUserEmail(localStorage.getItem('email'));
-        setStoredData(JSON.parse(localStorage.getItem('users_data')));
-    }, []); // 초기 1회 실행
     
     const userWishlist = useMemo(() => {
+        const userEmail = localStorage.getItem('email');
+        const storedData = JSON.parse(localStorage.getItem('users_data'));
         return storedData[userEmail]?.wishlist || [];
-    }, [storedData, userEmail]);
+    }, []);
     
     useEffect(() => {
         const isMovieInWishlist = userWishlist.some((wishlistMovie) => wishlistMovie.id === movie.id);
@@ -26,6 +20,9 @@ const MovieCard = ({ movie, onChangeWishList, aspectRatio }) => {
 
     // 로컬 스토리지에 데이터 저장
     const updateLocalStorage = (updatedWishlist) => {
+        const userEmail = localStorage.getItem('email');
+        const storedData = JSON.parse(localStorage.getItem('users_data'));
+
         const updatedUserData = {
             ...storedData,
             [userEmail]: {
@@ -37,23 +34,32 @@ const MovieCard = ({ movie, onChangeWishList, aspectRatio }) => {
     };
 
     const toggleFavorite = () => {
+        const userEmail = localStorage.getItem('email');
+        const storedData = JSON.parse(localStorage.getItem('users_data'));
         const userWishlist = storedData[userEmail]?.wishlist || [];
 
         let updatedWishlist;
         if (isFavorite) {
-            // Remove movie from wishlist
+            // 위시리스트 영화 삭제
             updatedWishlist = userWishlist.filter((wishlistMovie) => wishlistMovie.id !== movie.id);
-        } else {
-            // Add movie to wishlist
-            updatedWishlist = [...userWishlist, movie];
+        } 
+        else {
+            // 중복 확인 후 위시리스트 영화 추가
+            const isDuplicate = userWishlist.some((wishlistMovie) => wishlistMovie.id === movie.id);
+            if (!isDuplicate) {
+                updatedWishlist = [...userWishlist, movie];
+            }
+            else updatedWishlist = [...userWishlist];
         }
 
         updateLocalStorage(updatedWishlist);
+        
         setIsFavorite(!isFavorite);
 
         // wish_list 페이지 재로딩
-        onChangeWishList();
+        if (tag === 'wish_list') onChangeWishList();
     };
+
 
     return (
         <div className="movie-card">

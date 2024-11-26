@@ -1,12 +1,12 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { fetchData } from 'utils/dataLoad';
-import { GET_MOVIES_BY_TAG_URL, GET_MOVIES_BY_SEARCH_URL, GET_MOVIES_BY_FILTER_URL } from 'api/index';
+import { GET_MOVIES_BY_TAG_URL, GET_MOVIES_BY_SEARCH_URL, GET_MOVIES_BY_FILTER_URL, GET_MOVIES_BY_GENRE_URL, GET_TRENDING_MOVIES_URL } from 'api/index';
 
 // 영화 데이터 로드 (tag를 통해 구분)
 export const fetchMovies = createAsyncThunk(
   'movies/fetchMovies',
   async (params, { rejectWithValue }) => {
-    const { tag, adult, search, genres, release_dates, vote_averages, page } = params;
+    const { tag, adult, search, genres, release_dates, vote_averages, page, period } = params;
     if (Number(localStorage.getItem('retryApi')) > 3) return null;
 
     try {
@@ -38,15 +38,23 @@ export const fetchMovies = createAsyncThunk(
       }
 
       // 인기 영화 데이터 로드
-      if (tag === 'popular') {
+      if (tag === "trending1" || tag === "trending2") {
+        data = await fetchData(GET_TRENDING_MOVIES_URL({ period, page }), '트렌드');
+      }
+      else if (tag === "now_playing") {
+        data = await fetchData(GET_MOVIES_BY_TAG_URL({ tag, page }), '최신 영화');
+      }
+      else if (tag === 'popular') {
         data = await fetchData(GET_MOVIES_BY_TAG_URL({ tag, page }), '대세 콘텐츠');
       } 
-      // 검색 및 필터 적용
-      else if (tag === 'search_filter') {
+      else if (tag === 'search_filter') { // 검색 및 필터 적용
         data = await handleSearchAndFilter({ search, adult, genres, release_dates, vote_averages, page });
       }
+      else {  // 장르별 데이터 로드
+        data = await fetchData(GET_MOVIES_BY_GENRE_URL({ genres, page }), `${tag}`);
+      }
 
-      // 기본 필터 API 호출
+      // 검색 시 기본 필터 API 호출
       if (search === '') {
         data = await fetchData(
           GET_MOVIES_BY_FILTER_URL({ adult, genres, vote_averages, page }),

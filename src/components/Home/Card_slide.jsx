@@ -17,7 +17,7 @@ const MovieCategory = ({ title, tag, period, genres }) => {
 
     useEffect(() => {
         if (movies.length) return ;
-            
+
         const fetchMovies = async () => {
 
             if (tag === "trending1" || tag === "trending2") {
@@ -30,18 +30,18 @@ const MovieCategory = ({ title, tag, period, genres }) => {
                 // 장르의 id 찾기
                 const findGenre = genres.find(genre => genre.name === tag); 
                 const findGenreId = findGenre ? Number(findGenre.id) : null;
-
+    
                 setUrl(GET_MOVIES_BY_GENRE_URL({ genre: findGenreId, page: 1 }));
             }
-
+    
             const data = await fetchData(url, tag);
-
+    
             setMovies(data.results || []);
-        }
+        };
 
         fetchMovies();
 
-    }, [movies, url, tag, genres, period])
+    }, [movies, tag, period, genres, url])
 
     const isTouchDevice = () => 'ontouchstart' in window || navigator.maxTouchPoints > 0;
 

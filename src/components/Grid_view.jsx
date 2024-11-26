@@ -75,7 +75,7 @@ const GridView = ({ tag, adult, search, selected_genres, release_dates, vote_ave
     <div>
       <div className="movie-grid">
         {movies.map((movie) => (
-          <MovieCard key={movie.id} movie={movie} onChangeWishList={toggleFavorite} aspectRatio="4 / 5" />
+          <MovieCard key={movie.id} tag={tag} movie={movie} onChangeWishList={toggleFavorite} aspectRatio="4 / 5" />
         ))}
       </div>
       
