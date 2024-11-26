@@ -4,7 +4,7 @@ import { TbRating18Plus } from "react-icons/tb";
 import { IMAGE_BASE_URL } from 'api/index';
 import 'styles/card.css';
 
-const MovieCard = ({ movie, aspectRatio }) => {
+const MovieCard = ({ movie, onChangeWishList, aspectRatio }) => {
     const [isFavorite, setIsFavorite] = useState(false);
     const [userEmail, setUserEmail] = useState(null);
     const [storedData, setStoredData] = useState({});
@@ -45,6 +45,9 @@ const MovieCard = ({ movie, aspectRatio }) => {
 
         updateLocalStorage(updatedWishlist);
         setIsFavorite(!isFavorite);
+
+        // wish_list 페이지 재로딩
+        onChangeWishList();
     };
 
     return (

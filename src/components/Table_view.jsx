@@ -95,7 +95,7 @@ const MovieTableView = ({ tag, adult, search, selected_genres, release_dates, vo
       if (tag === 'popular') {
         dispatch(fetchMovies({ tag: tag, page: page+1 }));
       }
-      else { // tag === 'search_filter'
+      else if (tag === 'search_filter') {
         dispatch(fetchMovies({ tag: tag, adult: adult, search: search, genres: selected_genres, release_dates: release_dates, vote_averages: vote_averages, page: page+1 }));
       }
     }
@@ -162,10 +162,24 @@ const MovieTableView = ({ tag, adult, search, selected_genres, release_dates, vo
     }
 
     updateLocalStorage(updatedWishlist);
-    setIsFavorite((prevState) => ({
-      ...prevState,
-      [movie.id]: !prevState[movie.id] // 현재 상태 반전
-    }));
+    
+    // isFavorite 상태를 업데이트한 후에 dispatch 실행
+    setIsFavorite((prevState) => {
+      const updatedWishlistState = {
+        ...prevState,
+        [movie.id]: !prevState[movie.id], // 현재 상태 반전
+      };
+
+      // updatedWishlist 업데이트 완료 후 dispatch 실행
+      if (tag === 'wish_list') {
+        // 비동기 실행을 보장하기 위해 Timeout 사용
+        setTimeout(() => {
+          dispatch(fetchMovies({ tag: tag, adult: adult }));
+        }, 0);
+      }
+
+      return updatedWishlistState;
+    });
   };
 
   return (

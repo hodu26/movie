@@ -35,7 +35,7 @@ const GridView = ({ tag, adult, search, selected_genres, release_dates, vote_ave
         if (tag === 'popular') {
           dispatch(fetchMovies({ tag: tag, page: page+1 }));
         }
-        else { // tag === 'search_filter'
+        else if (tag === 'search_filter') {
           dispatch(fetchMovies({ tag: tag, adult: adult, search: search, genres: selected_genres, release_dates: release_dates, vote_averages: vote_averages, page: page+1 }));
         }
       }
@@ -61,11 +61,21 @@ const GridView = ({ tag, adult, search, selected_genres, release_dates, vote_ave
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  const toggleFavorite = () => {
+    // updatedWishlist 업데이트 완료 후 dispatch 실행
+    if (tag === 'wish_list') {
+      // 비동기 실행을 보장하기 위해 Timeout 사용
+      setTimeout(() => {
+        dispatch(fetchMovies({ tag: tag, adult: adult }));
+      }, 0);
+    }
+  };
+
   return (
     <div>
       <div className="movie-grid">
         {movies.map((movie) => (
-          <MovieCard key={movie.id} movie={movie} aspectRatio="4 / 5" />
+          <MovieCard key={movie.id} movie={movie} onChangeWishList={toggleFavorite} aspectRatio="4 / 5" />
         ))}
       </div>
       

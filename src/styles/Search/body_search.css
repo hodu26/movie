@@ -9,7 +9,7 @@
 
 .movie-search-sub-container {
     position: relative;
-    width: calc(100%-4rem);
+    width: calc(100%+4rem);
     min-height: 100%;
     margin: 0rem -2rem 0rem -2rem;
 }
@@ -273,6 +273,7 @@
 /* 반응형 */
 @media (min-width: 768px) {
     .movie-search-sub-container {
+        width: 100%;
         margin: 0rem;
     }
     
