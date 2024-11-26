@@ -12,6 +12,31 @@ export const fetchMovies = createAsyncThunk(
     try {
       let data;
 
+      // 위시리스트 데이터 로드 (로컬스토리지 사용 -> API X)
+      if (tag === 'wish_list') {
+        const storedData = JSON.parse(localStorage.getItem('users_data')) || {};
+        const userEmail = localStorage.getItem('email');
+        let wishlist = storedData[userEmail]?.wishlist || [];
+
+        // 성인영화 필터링
+        const filteredWishlist = wishlist.filter((wishMovie) => {
+          const adultAllowMatch = (adult || !wishMovie.adult);
+
+          return adultAllowMatch;
+        });
+
+        wishlist = {
+          ...wishlist,
+          results: filteredWishlist,
+        };
+
+        return {
+          movies: filteredWishlist,
+          totalPages: 1,
+          page: 1,
+        };
+      }
+
       // 인기 영화 데이터 로드
       if (tag === 'popular') {
         data = await fetchData(GET_MOVIES_BY_TAG_URL({ tag, page }), '대세 콘텐츠');
@@ -139,7 +164,7 @@ const movieSlice = createSlice({
       .addCase(fetchMovies.fulfilled, (state, action) => {
         const { movies, totalPages, page } = action.payload;
 
-        // 페이지에 따라 데이터 병합
+        // 페이지에 따라 데이터 병합 (위시리스트는 항상 page = 1)
         if (page === 1) {
           state.movies = movies.map((movie, index) => ({
             ...movie,

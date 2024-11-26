@@ -21,9 +21,29 @@ const MovieTableView = ({ tag, adult, search, selected_genres, release_dates, vo
 
   const [currentPageInput, setCurrentPageInput] = useState(currentPage);
 
+  const [isFavorite, setIsFavorite] = useState({});
+  const [userEmail, setUserEmail] = useState(null);
+  const [storedData, setStoredData] = useState({});
+
+  // 초기 상태 로드
   useEffect(() => {
     dispatch(fetchGenres());
-  }, [dispatch]);
+
+    setUserEmail(localStorage.getItem('email'));
+    setStoredData(JSON.parse(localStorage.getItem('users_data')));
+
+    // 위시리스트 초기화
+    if (userEmail && storedData?.[userEmail]?.wishlist) {
+      const wishlistMovieIds = storedData[userEmail]?.wishlist.map((movie) => movie.id);
+      setIsFavorite((prevState) => ({
+        ...prevState,
+        ...wishlistMovieIds.reduce((acc, id) => {
+          acc[id] = true; // 위시리스트에 있는 영화는 true로 설정
+          return acc;
+        }, {})
+      }));
+    }
+  }, [dispatch, userEmail, storedData]);
 
   // 재로딩 될때 현재 페이지 첫 페이지로 초기화
   useEffect(() =>{
@@ -75,7 +95,7 @@ const MovieTableView = ({ tag, adult, search, selected_genres, release_dates, vo
       if (tag === 'popular') {
         dispatch(fetchMovies({ tag: tag, page: page+1 }));
       }
-      else { // tag === 'search_filter'
+      else if (tag === 'search_filter') {
         dispatch(fetchMovies({ tag: tag, adult: adult, search: search, genres: selected_genres, release_dates: release_dates, vote_averages: vote_averages, page: page+1 }));
       }
     }
@@ -116,6 +136,51 @@ const MovieTableView = ({ tag, adult, search, selected_genres, release_dates, vo
     (currentPage - 1) * moviesPerPage,
     currentPage * moviesPerPage
   );
+
+  // 로컬 스토리지에 위시리스트 데이터 저장
+  const updateLocalStorage = (updatedWishlist) => {
+    const updatedUserData = {
+        ...storedData,
+        [userEmail]: {
+            ...storedData[userEmail],
+            wishlist: updatedWishlist,
+        },
+    };
+    localStorage.setItem('users_data', JSON.stringify(updatedUserData));
+  };
+
+  const toggleFavorite = (movie) => {
+    const userWishlist = storedData[userEmail]?.wishlist || [];
+
+    let updatedWishlist;
+    if (isFavorite[movie.id]) {
+      // Remove movie from wishlist
+      updatedWishlist = userWishlist.filter((wishlistMovie) => wishlistMovie.id !== movie.id);
+    } else {
+      // Add movie to wishlist
+      updatedWishlist = [...userWishlist, movie];
+    }
+
+    updateLocalStorage(updatedWishlist);
+    
+    // isFavorite 상태를 업데이트한 후에 dispatch 실행
+    setIsFavorite((prevState) => {
+      const updatedWishlistState = {
+        ...prevState,
+        [movie.id]: !prevState[movie.id], // 현재 상태 반전
+      };
+
+      // updatedWishlist 업데이트 완료 후 dispatch 실행
+      if (tag === 'wish_list') {
+        // 비동기 실행을 보장하기 위해 Timeout 사용
+        setTimeout(() => {
+          dispatch(fetchMovies({ tag: tag, adult: adult }));
+        }, 0);
+      }
+
+      return updatedWishlistState;
+    });
+  };
 
   return (
     <div className="movie-table-view-container">
@@ -186,10 +251,10 @@ const MovieTableView = ({ tag, adult, search, selected_genres, release_dates, vo
                     </div>
                   </td>
                   <td className="table-data">
-                    <button className="favorite-button">
-                      <Star 
+                    <button className="favorite-button" onClick={() => toggleFavorite(movie)}>
+                      <Star
                         className='star-icon'
-                        fill={false ? '#facc15' : 'none'}
+                        fill={isFavorite[movie.id] ? '#facc15' : 'none'}
                         stroke="#facc15"
                         strokeWidth="1.5"
                       />

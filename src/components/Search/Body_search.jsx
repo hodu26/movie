@@ -18,6 +18,8 @@ const MovieSearchFilter = () => {
   const isLogin = useAuthCheck();
 
   const [isTable, setIsTable] = useState(null);
+  const [userEmail, setUserEmail] = useState(null);
+  const [storedData, setStoredData] = useState({});
 
   // 필터
   const [isExpanded, setIsExpanded] = useState(false);
@@ -56,21 +58,27 @@ const MovieSearchFilter = () => {
 
   // 로컬스토리지에서 검색 기록 불러오기
   useEffect(() => {
-    const savedHistory = JSON.parse(localStorage.getItem('user_data'))?.email?.search_history || [];
+    setUserEmail(localStorage.getItem('email'));
+    setStoredData(JSON.parse(localStorage.getItem('users_data')));
+
+    const savedHistory = storedData[userEmail]?.search_history || [];
     setSearchHistory(savedHistory);
-  }, []);
+  }, [userEmail, storedData]);
 
   // 포커스 아웃 시 검색 기록에 추가 및 로컬스토리지에 저장
   const handleBlur = () => {
     if (searchQuery.trim() !== '') {
-      // 중복 여부 확인
-      const isDuplicate = searchHistory.includes(searchQuery);
-    
-      if (!isDuplicate) {
-        const newHistory = [searchQuery, ...searchHistory].slice(0, 3); // 최대 3개로 제한
-        setSearchHistory(newHistory);
-        localStorage.setItem('user_data', JSON.stringify({ email: { search_history: newHistory } }));
+      const userData = storedData[userEmail] || { search_history: [], card: [] };
+
+      // 중복 여부 확인 후 검색 기록 업데이트
+      if (!userData.search_history.includes(searchQuery)) {
+          const newHistory = [searchQuery, ...userData.search_history].slice(0, 3); // 최대 3개로 제한
+          userData.search_history = newHistory;
       }
+
+      // 업데이트된 사용자 데이터 저장
+      storedData[userEmail] = userData;
+      localStorage.setItem('users_data', JSON.stringify(storedData));
     }
 
     // 일정 시간 후 검색 기록 닫기

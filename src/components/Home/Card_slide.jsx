@@ -18,7 +18,7 @@ const MovieCategory = ({ title, tag, period, genres }) => {
             
         const fetchMovies = async () => {
 
-            if (tag === "trending") {
+            if (tag === "trending1" || tag === "trending2") {
                 setUrl(GET_TRENDING_MOVIES_URL({ period: period, page: 1 })); 
             }
             else if (tag === "now_playing") {
