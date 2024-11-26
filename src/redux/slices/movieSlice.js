@@ -100,7 +100,7 @@ const handleSearchAndFilter = async ({ search, adult, genres, release_dates, vot
       return {
         ...searchData,
         results: filteredMovies,
-        total_pages: Math.ceil(filteredMovies.length / 20),
+        total_pages: searchData.total_pages,
       };
     }
     return searchData;
