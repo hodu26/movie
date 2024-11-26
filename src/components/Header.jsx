@@ -1,18 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import { User, Menu } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { resetMovies } from '../redux/slices/movieSlice';
 import { toast } from 'react-toastify';
 import 'styles/header.css';
 
 const Header = () => {
+    const dispatch = useDispatch();
     const [email, setEmail] = useState('');
     const [isSidebarOpen, setSidebarOpen] = useState(false);
     const navigate = useNavigate();
 
-    const handleHome = () => navigate('/');
-    const handlePopular = () => navigate('/popular');
-    const handleSearch = () => navigate('/search');
-    const handleWishlist = () => navigate('/wishlist');
+    const handleHome = () => { dispatch(resetMovies()); navigate('/'); }
+    const handlePopular = () => { dispatch(resetMovies()); navigate('/popular'); }
+    const handleSearch = () => { dispatch(resetMovies()); navigate('/search'); }
+    const handleWishlist = () => { dispatch(resetMovies()); navigate('/wishlist'); }
 
     const handleProfile = () => { // 로그아웃
         const savedTMDbKey = localStorage.getItem('TMDb-Key');
