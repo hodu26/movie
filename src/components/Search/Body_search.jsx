@@ -48,7 +48,7 @@ const MovieSearchFilter = () => {
     } else {
       setSearchHistory([]);
     }
-  }, []);
+  }, [showHistory]);
   
   // 데이터 로드
   useEffect(() => {
