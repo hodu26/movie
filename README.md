@@ -30,10 +30,7 @@
 
 - **API 출처**:  
   TMDb API를 통해 영화 데이터베이스에 있는 인기 영화, 검색 결과, 장르 정보 등을 가져옵니다.  
-  - 출처: [TMDb API](https://www.themoviedb.org/documentation/api)  
-
-### 아이콘
-![TMDb](https://www.themoviedb.org/assets/2/v4/logos/stacked-blue-8c4d43b738109aa5b809ed055a85aa1d6d6535a2e3fc576f7332aa084224c377.svg)
+  - <img src="https://www.themoviedb.org/assets/2/v4/logos/v2/blue_short-8e7b30f73a4020692ccca9c88bafe5dcb6f8a62a4c6bc55cd9ba82bb2cd95f6c.svg" alt="TMDb" width="100" />
 
 ---
 
