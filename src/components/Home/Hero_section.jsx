@@ -27,7 +27,7 @@ const HeroSection = () => {
     return (
         <div className="hero-section">
             <img
-                src={ movie.poster_path !== null ? `${IMAGE_BASE_URL}/original${movie.poster_path}` : require('assets/image/no-banner-image.png') }
+                src={ movie.backdrop_path !== null ? `${IMAGE_BASE_URL}/original${movie.backdrop_path}` : require('assets/image/no-banner-image.png') }
                 alt="Hero Banner"
                 className="hero-image"
             />
@@ -35,6 +35,7 @@ const HeroSection = () => {
                 <div className="hero-content">
                     <h1 className="hero-title">{movie.title}</h1>
                     <p className="hero-description">{movie.overview}</p>
+                    <p className="hero-description2">...</p>
                     <div className="hero-buttons">
                         <button className="hero-button play-button">재생</button>
                         <button className="hero-button info-button">상세 정보</button>
