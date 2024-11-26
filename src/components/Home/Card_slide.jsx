@@ -1,5 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { TbTrendingUp } from "react-icons/tb";
+import { FaPlayCircle, FaTheaterMasks, FaFistRaised, FaSkullCrossbones } from 'react-icons/fa';
 import { fetchData } from 'utils/dataLoad';
 import { GET_MOVIES_BY_GENRE_URL, GET_TRENDING_MOVIES_URL, GET_MOVIES_BY_TAG_URL } from 'api/index';
 import MovieCard from 'components/Card';
@@ -76,7 +78,15 @@ const MovieCategory = ({ title, tag, period, genres }) => {
 
     return (
         <div className="movie-category">
-            <h2 className="category-title">{title}</h2>
+            <h2 className="category-title">
+                {title}
+                {tag === "trending1" && <TbTrendingUp className="category-icon-size text-red-400" />}
+                {tag === "trending2" && <TbTrendingUp className="category-icon-size text-yellow-400" />}
+                {tag === "now_playing" && <FaPlayCircle className="category-icon-size text-green-400" />}
+                {tag === "액션" && <FaFistRaised className="category-icon-size text-blue-400" />}
+                {tag === "코미디" && <FaTheaterMasks className="category-icon-size text-yellow-400" />}
+                {tag === "공포" && <FaSkullCrossbones className="category-icon-size text-gray-400" />}
+            </h2>
             <div
                 className="scroll-container group"
                 onTouchStart={handleTouchStart}
