@@ -22,7 +22,7 @@
 
 .hero-content {
   max-width: 32rem;
-  margin-left: 3rem;
+  margin: 0rem 1.5rem;
 }
 
 .hero-title {
@@ -34,8 +34,14 @@
 
 .hero-description {
   color: #d1d5db;
-  /* Tailwind text-gray-200 */
-  margin-bottom: 1.5rem;
+  font-size: 0.725rem;
+  max-height: 3.2rem;
+  overflow: hidden;
+}
+
+.hero-description2 {
+  color: #d1d5db;
+  margin-bottom: 0.75rem;
   font-size: 0.725rem;
 }
 
@@ -83,8 +89,19 @@
   .hero-title {
     font-size: 3rem;
   }
+
+  .hero-content {
+    margin: 0rem 3rem;
+  }
   
   .hero-description {
+    font-size: 1.125rem;
+    max-height: 4.8rem;
+  }
+  
+  .hero-description2 {
+    color: #d1d5db;
+    margin-bottom: 1.5rem;
     font-size: 1.125rem;
   }
 
