@@ -3,10 +3,19 @@
 }
 
 .category-title {
-  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-items: center;
+  font-size: 1rem;
   font-weight: bold;
   margin-bottom: 1rem;
   color: white;
+}
+
+.category-icon-size {
+  margin-left: 0.5rem;
+  width: 1rem;
+  height: 1rem;
 }
 
 .scroll-container {
@@ -50,4 +59,16 @@
 
 .movie-scroll-area::-webkit-scrollbar {
   display: none; /* Chrome, Safari */
+}
+
+/* 반응형 */
+@media (min-width: 768px) {
+  .category-title {
+    font-size: 1.5rem;
+  }
+
+  .category-icon-size {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
 }
