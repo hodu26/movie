@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import useAuthCheck from 'hooks/useAuthCheck';
 import { fetchMovies } from '../../redux/slices/movieSlice';
 import ButtonTableGrid from 'components/Button_tablegrid';
@@ -15,6 +15,8 @@ const MovieSearchFilter = () => {
   const [isTable, setIsTable] = useState(null);
   const [allowAdult, setAllowAdult] = useState(false);
 
+  const { movies, isLoading } = useSelector((state) => state.movies);
+
   // 데이터 로드
   useEffect(() => {
     // 영화 데이터 로드
@@ -24,6 +26,13 @@ const MovieSearchFilter = () => {
       );
     }
   }, [dispatch, isLogin, allowAdult]);
+
+  // 뷰 상태 관리
+  useEffect(() => {
+    if (isTable !== null) {
+      localStorage.setItem('isTable', JSON.stringify(isTable));
+    }
+  }, [isTable]);
 
   useEffect(() => {
     if (!isLogin) return;
@@ -35,7 +44,7 @@ const MovieSearchFilter = () => {
     }
   }, [isLogin]);
 
-  if (!isLogin) return <LoadingSpinner />;
+  if (!isLogin || isLoading) return <LoadingSpinner />;
 
   const clearWishList = () => {
     const userEmail = localStorage.getItem('email');
@@ -91,18 +100,24 @@ const MovieSearchFilter = () => {
       </div>
 
       {/* 테이블 컨테이너 */}
-      <div className="movie-wishlist-view-container">
-        {isTable ? (
-          <MovieTable
-            tag="wish_list"
-            adult={allowAdult}
-          />
-        ) : (
-          <MovieGrid
-            tag="wish_list"
-            adult={allowAdult}
-          />
-        )}
+      <div className="min-w-full h-full">
+        {movies.length === 0 ? (
+          <h1 className='text-center text-[#009eb3]'> 저장된 위시리스트가 없습니다 </h1>
+        ) : ( 
+          <div className="movie-wishlist-view-container">
+            {isTable ? (
+              <MovieTable
+                tag="wish_list"
+                adult={allowAdult}
+              />
+            ) : (
+              <MovieGrid
+                tag="wish_list"
+                adult={allowAdult}
+              />
+            )}
+            </div>
+          )}
       </div>
     </div>
   );
