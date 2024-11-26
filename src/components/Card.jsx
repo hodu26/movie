@@ -24,15 +24,6 @@ const MovieCard = ({ movie, onChangeWishList, aspectRatio }) => {
         setIsFavorite(isMovieInWishlist);
     }, [userWishlist, movie.id]);
 
-    // useEffect(() => {
-    //     setUserEmail(localStorage.getItem('email'));
-    //     setStoredData(JSON.parse(localStorage.getItem('users_data')));
-
-    //     const userWishlist = storedData[userEmail]?.wishlist || [];
-    //     const isMovieInWishlist = userWishlist.some((wishlistMovie) => wishlistMovie.id === movie.id);
-    //     setIsFavorite(isMovieInWishlist);
-    // }, [userEmail, storedData, movie.id]);
-
     // 로컬 스토리지에 데이터 저장
     const updateLocalStorage = (updatedWishlist) => {
         const updatedUserData = {
