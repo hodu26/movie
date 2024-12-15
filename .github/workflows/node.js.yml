@@ -26,9 +26,12 @@ jobs:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
 
-      # 환경 변수로 TMDB_ACCESS_TOKEN를 설정
+      # 환경 변수로 TMDB_ACCESS_TOKEN을 설정
       - name: Create .env file
-        run: echo "REACT_APP_TMDB_ACCESS_TOKEN=${{ secrets.REACT_APP_TMDB_ACCESS_TOKEN }}" > .env
+        run: |
+          echo "REACT_APP_TMDB_ACCESS_TOKEN=${{ secrets.REACT_APP_TMDB_ACCESS_TOKEN }}" >> .env
+          echo "REACT_APP_TMDB_KEY=${{ secrets.REACT_APP_TMDB_KEY }}" >> .env
+          echo "REACT_APP_KAKAO_SOCIAL_LOGIN=${{ secrets.REACT_APP_KAKAO_SOCIAL_LOGIN }}" >> .env
 
       - run: npm ci
       - run: npm run build --if-present
