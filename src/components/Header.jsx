@@ -20,6 +20,7 @@ const Header = () => {
     const handleProfile = () => { // 로그아웃
         const savedTMDbKey = localStorage.getItem('TMDb-Key');
 
+        // TMDb-Key 삭제 로직
         if (savedTMDbKey){
             const savedRememberMe = localStorage.getItem('rememberMe') === 'true';
 
@@ -30,7 +31,27 @@ const Header = () => {
             localStorage.removeItem('TMDb-Key');
             toast.success('로그아웃 되었습니다.');
         }
-        
+
+        // Kakao 관련 토큰 삭제
+        const kakaoAccessToken = localStorage.getItem('kakao_access_token');
+        const kakaoRefreshToken = localStorage.getItem('kakao_refresh_token');
+
+        if (kakaoAccessToken || kakaoRefreshToken) {
+            localStorage.removeItem('kakao_access_token');
+            localStorage.removeItem('kakao_refresh_token');
+            localStorage.removeItem('kakao_access_token_expiry');
+            localStorage.removeItem('nickname');
+
+            // 카카오 로그아웃 처리
+            if (window.Kakao && window.Kakao.Auth) {
+                window.Kakao.Auth.logout(() => {
+                    console.log('Kakao 로그아웃 완료');
+                });
+            }
+        }
+
+        // 알림 및 리다이렉트
+        toast.success('로그아웃 되었습니다.');
         navigate('/signin');
     }
 

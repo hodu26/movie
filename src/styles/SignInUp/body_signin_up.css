@@ -203,3 +203,21 @@ body {
 .toggle:hover {
   text-decoration: underline;
 }
+
+/* kakao-social-login */
+
+.social-login img.btn-kakao {
+  cursor: pointer;
+  display: block;
+  margin: 0 auto; /* 중앙 정렬 */
+  padding-bottom: 10px;
+  transition: transform 0.3s ease; /* 클릭 시 애니메이션 효과 */
+}
+
+.social-login img.btn-kakao:hover {
+  transform: scale(1.05); /* 마우스 호버 시 확대 */
+}
+
+.social-login img.btn-kakao:active {
+  transform: scale(0.95); /* 클릭 시 축소 */
+}

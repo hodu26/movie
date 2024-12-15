@@ -12,10 +12,31 @@ function LoginRegister() {
   const [agreeTerms, setAgreeTerms] = useState(false);
   const navigate = useNavigate();
 
-  // ref로 이메일, 비밀번호, 비밀번호 확인 필드 접근
   const emailRef = useRef(null);
   const passwordRef = useRef(null);
   const confirmPasswordRef = useRef(null);
+
+  // 카카오 SDK 초기화
+  useEffect(() => {
+    if (!window.Kakao.isInitialized()) {
+      window.Kakao.init(process.env.REACT_APP_KAKAO_SOCIAL_LOGIN);
+      console.log('Kakao SDK Initialized');
+    }
+  }, []);
+  
+  // 카카오 로그인 핸들러
+  const handleKakaoLogin = () => {
+    window.Kakao.Auth.login({
+      scope: 'profile_nickname,account_email', // 요청할 권한 범위
+      redirectUri: `${window.location.origin}/movie/signin/oauth2/code/kakao`, // 로그인 후 리다이렉트될 URI
+      success: (authObj) => {
+        console.log('Kakao Auth Success:', authObj);
+      },
+      fail: (err) => {
+        console.error('Kakao Auth Error:', err);
+      },
+    });
+  };
 
   // 로컬스토리지에서 데이터 로드
   useEffect(() => {
@@ -51,11 +72,9 @@ function LoginRegister() {
       localStorage.setItem('retryApi', 0);
 
       toast.success(`안녕하세요, ${email}님!`);
-
       setEmail('');
       setPassword('');
       setRememberMe(false);
-
       navigate('/');
     } else {
       toast.error('이메일 또는 비밀번호가 올바르지 않습니다.');
@@ -179,6 +198,15 @@ function LoginRegister() {
               <button className="btn btn-login" onClick={handleLogin}>
                 로그인
               </button>
+              {/* 카카오 로그인 버튼 */}
+              <div className="social-login">
+                <img
+                  src={require('assets/image/kakao_login_wide.png')}
+                  alt="카카오로 로그인"
+                  className="btn-kakao"
+                  onClick={handleKakaoLogin}
+                />
+              </div>
               <p className="toggle-text"> 계정이 없으신가요?{' '}
                 <span className="toggle" onClick={toggleForm}>
                   회원가입
@@ -229,7 +257,7 @@ function LoginRegister() {
                   약관 확인 및 동의
                 </label>
               </div>
-              <button className="btn" onClick={handleRegister}>
+              <button className="btn btn-register" onClick={handleRegister}>
                 회원가입
               </button>
               <p className="toggle-text"> 이미 계정이 있으신가요?{' '}
