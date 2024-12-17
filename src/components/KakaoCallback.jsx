@@ -44,17 +44,26 @@ const KakaoCallback = () => {
       }
     };
 
+    // 카카오 회원 정보 조회
     const getUserInfo = async (accessToken) => {
       try {
         const response = await axios.get('https://kapi.kakao.com/v2/user/me', {
           headers: { Authorization: `Bearer ${accessToken}` },
         });
 
+        // 카카오 프로필 ID (고유 ID)
+        const kakaoId = response.data.id;
         const kakaoEmail = response.data.kakao_account.email;
         const nickname = response.data.kakao_account.profile.nickname;
 
+        // 회원 정보 검증
+        if (!kakaoEmail) {
+            toast.error('회원 정보를 가져올 수 없습니다. 다시 로그인해 주세요.');
+            return;
+        }
+
         // 카카오 회원정보 콘솔에 출력
-        console.log(`회원 정보 => email: ${kakaoEmail}, nickname: ${nickname}`)
+        console.log(`회원 정보 => ID: ${kakaoId}, Email: ${kakaoEmail}, Nickname: ${nickname}`)
 
         handleUserAuthentication(kakaoEmail, nickname);
       } catch (error) {
