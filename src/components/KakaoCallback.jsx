@@ -57,13 +57,13 @@ const KakaoCallback = () => {
         const nickname = response.data.kakao_account.profile.nickname;
 
         // 회원 정보 검증
-        if (!kakaoEmail) {
+        if (!kakaoId || !kakaoEmail) {
             toast.error('회원 정보를 가져올 수 없습니다. 다시 로그인해 주세요.');
             return;
         }
 
-        // 카카오 회원정보 콘솔에 출력
-        console.log(`회원 정보 => ID: ${kakaoId}, Email: ${kakaoEmail}, Nickname: ${nickname}`)
+        // 카카오 회원정보 콘솔에 출력 (고유 ID는 보안상 가림)
+        console.log(`회원 정보 => Email: ${kakaoEmail}, Nickname: ${nickname}`)
 
         handleUserAuthentication(kakaoEmail, nickname);
       } catch (error) {
