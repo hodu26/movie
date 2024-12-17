@@ -34,6 +34,8 @@ function LoginRegister() {
       },
       fail: (err) => {
         console.error('Kakao Auth Error:', err);
+        // 네트워크 오류 발생 시 피드백(에러 메세지) 제공
+        toast.error('로그인에 실패했습니다. 다시 시도해주세요.');
       },
     });
   };
