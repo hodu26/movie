@@ -9,6 +9,7 @@ import 'styles/header.css';
 const Header = () => {
     const dispatch = useDispatch();
     const [email, setEmail] = useState('');
+    const [nickname, setNickname] = useState('');
     const [isSidebarOpen, setSidebarOpen] = useState(false);
     const navigate = useNavigate();
 
@@ -60,8 +61,10 @@ const Header = () => {
     // 로컬스토리지에서 데이터 로드
     useEffect(() => {
         const savedEmail = localStorage.getItem('email');
+        const savedNickname = localStorage.getItem('nickname');
 
         setEmail(savedEmail);
+        setNickname(savedNickname || '');
     }, []);
 
     return (
@@ -93,6 +96,8 @@ const Header = () => {
                         <button onClick={handleProfile}>
                             <User className="w-6 h-6 text-white" />
                         </button>
+                        {/* 카카오 로그인 시 닉네임 표시 */}
+                        {nickname && <div className='user-nickname'>{nickname}</div>}
                     </div>
                 </div>
             </header>

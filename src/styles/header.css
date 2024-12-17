@@ -80,6 +80,12 @@
   color: white;
 }
 
+.user-profile .user-nickname {
+  display: absolute;
+  color: #d1d5db97;
+  font-size: 0.5rem;
+}
+
 /* 햄버거 메뉴 버튼 */
 .menu-toggle {
   cursor: pointer;
@@ -156,5 +162,9 @@
 
   .user-profile .user-email {
     font-size: 1rem;
+  }
+
+  .user-profile .user-nickname {
+    font-size: 0.8rem;
   }
 }
