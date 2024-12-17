@@ -19,7 +19,7 @@ function LoginRegister() {
   // 카카오 SDK 초기화
   useEffect(() => {
     if (!window.Kakao.isInitialized()) {
-      window.Kakao.init(process.env.REACT_APP_KAKAO_SOCIAL_LOGIN);
+      window.Kakao.init(process.env.REACT_APP_KAKAO_API_KEY);
       console.log('Kakao SDK Initialized');
     }
   }, []);

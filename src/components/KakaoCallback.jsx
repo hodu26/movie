@@ -19,7 +19,7 @@ const KakaoCallback = () => {
         const response = await axios.post('https://kauth.kakao.com/oauth/token', null, {
           params: {
             grant_type: 'authorization_code',
-            client_id: process.env.REACT_APP_KAKAO_SOCIAL_LOGIN,
+            client_id: process.env.REACT_APP_KAKAO_API_KEY,
             redirect_uri: `${window.location.origin}/movie/signin/oauth2/code/kakao`,
             code: code,
           },

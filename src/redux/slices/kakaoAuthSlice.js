@@ -25,7 +25,7 @@ export const refreshAccessToken = createAsyncThunk(
       const response = await axios.post('https://kauth.kakao.com/oauth/token', null, {
         params: {
           grant_type: 'refresh_token',
-          client_id: process.env.REACT_APP_KAKAO_SOCIAL_LOGIN,
+          client_id: process.env.REACT_APP_KAKAO_API_KEY,
           refresh_token: refreshToken,
         },
       });
