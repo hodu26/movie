@@ -45,6 +45,8 @@ function App() {
   }, [dispatch]);
   // --------------------
 
+  console.log('Current Environment:', process.env.REACT_APP_NODE_ENV);
+
   return (
       <Router basename="/movie">
         <PageTransitions />
