@@ -46,6 +46,9 @@ const KakaoCallback = () => {
         const kakaoEmail = response.data.kakao_account.email;
         const nickname = response.data.kakao_account.profile.nickname;
 
+        // 카카오 회원정보 콘솔에 출력
+        console.log(`회원 정보 => email: ${kakaoEmail}, nickname: ${nickname}`)
+
         handleUserAuthentication(kakaoEmail, nickname);
       } catch (error) {
         console.error('Error fetching user info:', error);

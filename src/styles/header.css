@@ -77,13 +77,30 @@
 .user-profile svg {
   width: 1.5rem;
   height: 1.5rem;
-  color: white;
+  /* color: white; */
 }
 
 .user-profile .user-nickname {
   display: absolute;
   color: #d1d5db97;
   font-size: 0.5rem;
+}
+
+.login-status {
+  display: absolute;
+  font-size: 0.375rem;
+  font-weight: 500;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  margin-top: 0.5rem;
+}
+
+.login-status.text-green-500 {
+  background-color: rgba(16, 185, 129, 0.1);
+}
+
+.login-status.text-red-500 {
+  background-color: rgba(239, 68, 68, 0.1);
 }
 
 /* 햄버거 메뉴 버튼 */

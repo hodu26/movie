@@ -10,6 +10,7 @@ const Header = () => {
     const dispatch = useDispatch();
     const [email, setEmail] = useState('');
     const [nickname, setNickname] = useState('');
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [isSidebarOpen, setSidebarOpen] = useState(false);
     const navigate = useNavigate();
 
@@ -19,10 +20,8 @@ const Header = () => {
     const handleWishlist = () => { dispatch(resetMovies()); navigate('/wishlist'); }
 
     const handleProfile = () => { // 로그아웃
-        const savedTMDbKey = localStorage.getItem('TMDb-Key');
-
         // TMDb-Key 삭제 로직
-        if (savedTMDbKey){
+        if (isLoggedIn){
             const savedRememberMe = localStorage.getItem('rememberMe') === 'true';
 
             if (!savedRememberMe){
@@ -30,29 +29,30 @@ const Header = () => {
             }
             
             localStorage.removeItem('TMDb-Key');
+            
+            // Kakao 관련 토큰 삭제
+            const kakaoAccessToken = localStorage.getItem('kakao_access_token');
+            const kakaoRefreshToken = localStorage.getItem('kakao_refresh_token');
+
+            if (kakaoAccessToken || kakaoRefreshToken) {
+                localStorage.removeItem('kakao_access_token');
+                localStorage.removeItem('kakao_refresh_token');
+                localStorage.removeItem('kakao_access_token_expiry');
+                localStorage.removeItem('nickname');
+
+                // 카카오 로그아웃 처리
+                if (window.Kakao && window.Kakao.Auth) {
+                    window.Kakao.Auth.logout(() => {
+                        console.log('Kakao 로그아웃 완료');
+                    });
+                }
+            }
+
+            // 알림 및 리다이렉트
+            setIsLoggedIn((prevState) => !prevState);
             toast.success('로그아웃 되었습니다.');
         }
 
-        // Kakao 관련 토큰 삭제
-        const kakaoAccessToken = localStorage.getItem('kakao_access_token');
-        const kakaoRefreshToken = localStorage.getItem('kakao_refresh_token');
-
-        if (kakaoAccessToken || kakaoRefreshToken) {
-            localStorage.removeItem('kakao_access_token');
-            localStorage.removeItem('kakao_refresh_token');
-            localStorage.removeItem('kakao_access_token_expiry');
-            localStorage.removeItem('nickname');
-
-            // 카카오 로그아웃 처리
-            if (window.Kakao && window.Kakao.Auth) {
-                window.Kakao.Auth.logout(() => {
-                    console.log('Kakao 로그아웃 완료');
-                });
-            }
-        }
-
-        // 알림 및 리다이렉트
-        toast.success('로그아웃 되었습니다.');
         navigate('/signin');
     }
 
@@ -62,6 +62,9 @@ const Header = () => {
     useEffect(() => {
         const savedEmail = localStorage.getItem('email');
         const savedNickname = localStorage.getItem('nickname');
+        const savedTMDbKey = localStorage.getItem('TMDb-Key');
+
+        if (savedTMDbKey) setIsLoggedIn(true);
 
         setEmail(savedEmail);
         setNickname(savedNickname || '');
@@ -94,7 +97,11 @@ const Header = () => {
                     <div className="user-profile">
                         <span className='user-email'>{email}</span>
                         <button onClick={handleProfile}>
-                            <User className="w-6 h-6 text-white" />
+                            {/* 로그인 상태일 시 초록, 로그아웃 상태일 시 빨강 처리 */}
+                            <User
+                                className="w-6 h-6"
+                                color={isLoggedIn ? 'rgba(16, 185, 129, 0.8)' : 'rgba(239, 68, 68, 0.8)'}
+                            />
                         </button>
                         {/* 카카오 로그인 시 닉네임 표시 */}
                         {nickname && <div className='user-nickname'>{nickname}</div>}
