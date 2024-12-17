@@ -25,7 +25,7 @@ export const refreshAccessToken = createAsyncThunk(
       const response = await axios.post('https://kauth.kakao.com/oauth/token', null, {
         params: {
           grant_type: 'refresh_token',
-          client_id: process.env.REACT_APP_KAKAO_SOCIAL_LOGIN,
+          client_id: process.env.REACT_APP_KAKAO_API_KEY,
           refresh_token: refreshToken,
         },
       });
@@ -51,6 +51,8 @@ export const refreshAccessToken = createAsyncThunk(
       return { accessToken: access_token, refreshToken: refresh_token || refreshToken };
     } catch (err) {
       console.error('Access Token 갱신 실패:', err);
+      // 네트워크 오류나 API 호출 실패 시 예외 처리
+      toast.error('토큰 갱신에 실패했습니다. 다시 로그인해 주세요.');
       return rejectWithValue(err.response.data || 'Failed to refresh token');
     }
   }
